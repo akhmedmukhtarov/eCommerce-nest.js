@@ -5,6 +5,7 @@ import { Category } from 'src/modules/category/entities/category.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
+import { Brand } from 'src/modules/brand/entities/brand.entity';
 
 require('dotenv').config()
 
@@ -15,6 +16,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: 'sdb-nest',
-    entities: [User, Admin, Category, Product, Attribute, AttributeValue],
+    entities: [User, Admin, Category, Product, Attribute, AttributeValue,Brand],
     synchronize: true,
 };

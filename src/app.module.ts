@@ -9,6 +9,7 @@ import { ProductModule } from './modules/product/product.module';
 import { MediaModule } from './modules/media/media.module';
 import { AttributeModule } from './modules/attribute/attribute.module';
 import { AttributeValueModule } from './modules/attribute-value/attribute-value.module';
+import { BrandModule } from './modules/brand/brand.module';
 
 
 
@@ -22,6 +23,7 @@ import { AttributeValueModule } from './modules/attribute-value/attribute-value.
         MediaModule,
         AttributeModule,
         AttributeValueModule,
+        BrandModule,
     ],
     controllers: [],
     providers: [],
