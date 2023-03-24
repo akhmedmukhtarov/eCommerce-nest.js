@@ -7,7 +7,13 @@ import { GetAllAttributeService } from './services/getAll-attribute.service';
 import { UpdateAttributeService } from './services/update-attribute.service';
 
 @Module({
-  controllers: [AttributeController],
-  providers: [CreateAttributeService,GetAllAttributeService,FindOneAttributeService,UpdateAttributeService,DeleteAttributeService]
+    controllers: [AttributeController],
+    providers: [
+        CreateAttributeService,
+        GetAllAttributeService,
+        FindOneAttributeService,
+        UpdateAttributeService,
+        DeleteAttributeService,
+    ],
 })
 export class AttributeModule {}

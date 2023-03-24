@@ -1,8 +1,7 @@
 export class CreateAttributeDto {
+    nameUz: string;
 
-    nameUz: string
+    nameRu: string;
 
-    nameRu: string
-
-    isFilterable?: boolean
+    isFilterable?: boolean;
 }
