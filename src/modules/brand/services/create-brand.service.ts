@@ -1,4 +1,6 @@
+
 import { Injectable } from '@nestjs/common';
+import { Category } from 'src/modules/category/entities/category.entity';
 import { CreateBrandDto } from '../dto/create-brand.dto';
 import { Brand } from '../entities/brand.entity';
 
@@ -6,8 +8,15 @@ import { Brand } from '../entities/brand.entity';
 export class CreateBrandService {
     async create(createBrandDto: CreateBrandDto) {
         try {
-            const { nameRu, nameUz, image, isFeatured, status } =
+            const { nameRu, nameUz, images, isFeatured, status , categoryId} =
                 createBrandDto;
+
+            const categories = []
+            for(const id of categoryId){
+                const category = await Category.findOneBy({id})
+                categories.push(category)
+            }
+
             const slug = nameUz
                 .split("'")
                 .join('')
@@ -18,10 +27,11 @@ export class CreateBrandService {
             const brand = Brand.create({
                 nameRu,
                 nameUz,
-                image,
+                images,
                 isFeatured,
                 status,
                 slug,
+                categories
             });
             brand.save();
         } catch (err) {
@@ -29,3 +39,4 @@ export class CreateBrandService {
         }
     }
 }
+

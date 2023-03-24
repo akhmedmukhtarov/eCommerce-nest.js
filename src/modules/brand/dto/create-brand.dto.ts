@@ -4,10 +4,12 @@ export class CreateBrandDto {
 
     nameRu:string
 
-    image: string
-    
+    images: string
+
     isFeatured?: boolean
 
     status?: boolean
+
+    categoryId: number[]
 
 }

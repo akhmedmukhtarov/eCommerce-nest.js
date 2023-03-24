@@ -25,7 +25,7 @@ export class Brand extends BaseEntity {
     status: boolean
 
     @Column({type: 'text'})
-    image: string
+    images: string
 
     @CreateDateColumn()
     createdAt: Date
@@ -35,4 +35,6 @@ export class Brand extends BaseEntity {
 
     @ManyToMany(()=> Category)
     categories: Category[]
+
+
 }
