@@ -20,7 +20,7 @@ export class LoginService {
                 ['verificationCode'],
             );
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }

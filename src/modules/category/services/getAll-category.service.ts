@@ -8,7 +8,7 @@ export class GetAllCategoriesService {
             const categories = await Category.find();
             return categories;
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }

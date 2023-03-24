@@ -16,13 +16,13 @@ import { parseFilePipeBuilder } from 'src/common/pipes/pipeBuilder-pipe';
 export class MediaController {
     constructor(
         private uploadMediaService: UploadMediaService,
-        private deleteMediaService: DeleteMediaService
-        ) {}
+        private deleteMediaService: DeleteMediaService,
+    ) {}
 
     @UseInterceptors(
         FilesInterceptor(
             'images',
-            3,//+process.env.MAX_COUNT_OF_IMAGE,
+            3, //+process.env.MAX_COUNT_OF_IMAGE,
             multerConfig,
         ),
     )
@@ -35,7 +35,7 @@ export class MediaController {
     }
 
     @Post('delete')
-    delete(@Body() deleteMediaDto: DeleteMediaDto){
-        return this.deleteMediaService.delete(deleteMediaDto)
+    delete(@Body() deleteMediaDto: DeleteMediaDto) {
+        return this.deleteMediaService.delete(deleteMediaDto);
     }
 }

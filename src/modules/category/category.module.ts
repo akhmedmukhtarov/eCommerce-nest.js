@@ -13,7 +13,7 @@ import { DeleteCategoryService } from './services/delete-category.service';
         GetAllCategoriesService,
         GetOneCategoryService,
         UpdateCategoryService,
-        DeleteCategoryService
+        DeleteCategoryService,
     ],
 })
 export class CategoryModule {}

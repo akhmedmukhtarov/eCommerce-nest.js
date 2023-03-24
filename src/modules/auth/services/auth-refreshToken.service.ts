@@ -27,7 +27,7 @@ export class RefreshTokenService extends TokenService {
                 return { accessToken };
             }
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }

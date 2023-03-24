@@ -7,7 +7,13 @@ import { FindOneProductservice } from './services/findOne-product.service';
 import { UpdateProductService } from './services/update-product.service';
 
 @Module({
-  controllers: [ProductController],
-  providers: [CreateProductService,FindAllProductService,FindOneProductservice,UpdateProductService,DeleteProductService]
+    controllers: [ProductController],
+    providers: [
+        CreateProductService,
+        FindAllProductService,
+        FindOneProductservice,
+        UpdateProductService,
+        DeleteProductService,
+    ],
 })
 export class ProductModule {}

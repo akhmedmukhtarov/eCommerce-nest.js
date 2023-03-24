@@ -4,7 +4,7 @@ import { MediaController } from './media.controller';
 import { UploadMediaService } from './services/upload-media.service';
 
 @Module({
-  controllers: [MediaController],
-  providers: [UploadMediaService, DeleteMediaService]
+    controllers: [MediaController],
+    providers: [UploadMediaService, DeleteMediaService],
 })
 export class MediaModule {}

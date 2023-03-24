@@ -21,7 +21,7 @@ export class AdminRefreshTokenService extends AdminTokenService{
                 return new HttpException('', HttpStatus.UNAUTHORIZED)
             }
         }catch(err){
-            console.log(err);
+            throw err
         }
 
     }

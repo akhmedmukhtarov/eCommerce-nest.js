@@ -19,7 +19,7 @@ export class AdminTokenService {
             );
             return { refreshToken, accessToken };
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }

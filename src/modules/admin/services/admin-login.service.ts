@@ -26,7 +26,7 @@ export class AdminLoginService extends AdminTokenService {
             Admin.update(admin.id, { hashedRefreshToken });
             return { accessToken, refreshToken };
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }

@@ -37,7 +37,7 @@ export class UpdateCategoryService {
                 images,
             });
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }

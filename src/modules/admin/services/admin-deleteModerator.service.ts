@@ -7,7 +7,7 @@ export class AdminDeleteModeratorService {
         try {
             Admin.delete({ username });
         } catch (err) {
-            console.log(err);
+            throw err
         }
     }
 }
