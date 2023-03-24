@@ -1,8 +1,8 @@
 import { Attribute } from "src/modules/attribute/entities/attribute.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class AttributeValue {
+export class AttributeValue extends BaseEntity {
     @PrimaryGeneratedColumn()
     id:number
 
