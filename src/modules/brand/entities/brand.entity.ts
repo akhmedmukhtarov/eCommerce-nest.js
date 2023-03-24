@@ -1,5 +1,5 @@
 import { Category } from "src/modules/category/entities/category.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Brand extends BaseEntity {
@@ -34,6 +34,7 @@ export class Brand extends BaseEntity {
     updatedAt: Date
 
     @ManyToMany(()=> Category)
+    @JoinTable()
     categories: Category[]
 
 
