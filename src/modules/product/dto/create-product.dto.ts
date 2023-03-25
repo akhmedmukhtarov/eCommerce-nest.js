@@ -31,7 +31,7 @@ export class CreateProductDto {
 
     images: string
 
-    attributeId?: number[]
+    // attributeId?: number[]
 
     attributeValueId?: number[]
 }

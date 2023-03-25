@@ -26,7 +26,7 @@ export class CreateProductService {
                 categoryId,
                 status,
                 images,
-                attributeId,
+                // attributeId,
                 attributeValueId
             } = createProductDto;
     
