@@ -1,5 +1,6 @@
 import { Attribute } from "src/modules/attribute/entities/attribute.entity";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/modules/product/entities/product.entity";
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class AttributeValue extends BaseEntity {
@@ -8,6 +9,9 @@ export class AttributeValue extends BaseEntity {
 
     @ManyToOne(()=> Attribute, (attribute)=> attribute.values)
     attribute: Attribute
+
+    @ManyToMany(()=> Product, (product)=> product.attributeValues)
+    products: Product[]
 
     @Column()
     nameUz:string

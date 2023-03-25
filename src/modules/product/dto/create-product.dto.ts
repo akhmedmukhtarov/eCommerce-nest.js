@@ -25,9 +25,13 @@ export class CreateProductDto {
 
     discount?: number
 
-    categoryId: number[]
+    categoryId?: number[]
 
     status?: boolean
 
     images: string
+
+    attributeId?: number[]
+
+    attributeValueId?: number[]
 }

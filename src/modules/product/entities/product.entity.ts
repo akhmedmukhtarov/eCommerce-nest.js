@@ -1,73 +1,90 @@
+
+import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 
 @Entity()
-export class Product extends BaseEntity{
+export class Product extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column()
-    nameUz: string
+    nameUz: string;
 
     @Column()
-    nameRu: string
+    nameRu: string;
 
     @Column()
-    slug: string
+    slug: string;
 
-    @Column({default: null})
-    descShortUz: string
+    @Column({ default: null })
+    descShortUz: string;
 
-    @Column({default: null})
-    descShortRu: string
+    @Column({ default: null })
+    descShortRu: string;
 
-    @Column({type: 'text',default:null})
-    descriptionUz: string
+    @Column({ type: 'text', default: null })
+    descriptionUz: string;
 
-    @Column({type: 'text',default:null})
-    descriptionRu: string
+    @Column({ type: 'text', default: null })
+    descriptionRu: string;
 
     @Column()
-    quantity: number
+    quantity: number;
 
-    @Column({type: 'bigint'})
-    price: number
+    @Column({ type: 'bigint' })
+    price: number;
 
-    @Column({default: false})
-    isFeatured: boolean
+    @Column({ default: false })
+    isFeatured: boolean;
 
-    @Column({default: false})
-    isPopular: boolean
+    @Column({ default: false })
+    isPopular: boolean;
 
-    @Column({default: false})
-    isNew: boolean
+    @Column({ default: false })
+    isNew: boolean;
 
-    @Column({type: 'text'})
-    images: string
+    @Column({ type: 'text' })
+    images: string;
 
-    @Column({type: 'bigint',default: null})
-    discount: number
+    @Column({ type: 'bigint', default: null })
+    discount: number;
 
-    @ManyToMany(()=> Category)
+    @ManyToMany(() => Category)
     @JoinTable()
-    categories: Category[]
+    categories: Category[];
 
-    @Column({default: 0})
-    viewCount: number
+    // @ManyToMany(() => Attribute, (attr: Attribute) => attr.products)
+    // @JoinTable()
+    // attributes: Attribute[];
 
-    @Column({default: 0})
-    orderCount: number
+    @ManyToMany((() => AttributeValue), (attrValue: AttributeValue) => attrValue.products)
+    @JoinTable()
+    attributeValues: AttributeValue[]
 
-    @Column({default: true})
-    status: boolean
+
+    @Column({ default: 0 })
+    viewCount: number;
+
+    @Column({ default: 0 })
+    orderCount: number;
+
+    @Column({ default: true })
+    status: boolean;
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date
-
-
-
-
+    updatedAt: Date;
 }

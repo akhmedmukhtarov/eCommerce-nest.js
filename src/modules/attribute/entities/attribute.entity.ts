@@ -8,6 +8,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Product } from 'src/modules/product/entities/product.entity';
+import { Category } from 'src/modules/category/entities/category.entity';
 
 @Entity()
 export class Attribute extends BaseEntity {
@@ -20,10 +21,11 @@ export class Attribute extends BaseEntity {
     )
     values: AttributeValue[];
 
-    @ManyToMany(()=> Product)
-    @JoinTable()
-    products: Product[]
+    // @ManyToMany(()=> Product, (product: Product) => product.attributes)
+    // products: Product[]
 
+    @ManyToMany(()=> Category, (category: Category)=> category.attributes)
+    categories: Category[]
 
     @Column()
     nameUz: string;

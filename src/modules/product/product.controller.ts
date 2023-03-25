@@ -11,6 +11,7 @@ import {
     Patch,
     Param,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -24,7 +25,7 @@ export class ProductController {
         private findOneProductservice: FindOneProductservice,
         private updateProductService: UpdateProductService,
         private deleteProductService: DeleteProductService,
-    ) {}
+        ) {}
 
     @Post()
     create(@Body() createProductDto: CreateProductDto) {
@@ -32,13 +33,13 @@ export class ProductController {
     }
 
     @Get()
-    findAll() {
-        return this.findAllProductService.findAll();
+    findAll(@Query() query: any) {
+        return this.findAllProductService.findAll(query)
     }
 
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return this.findOneProductservice.findOne(id);
+        return this.findOneProductservice.findOne(id)
     }
 
     @Patch(':id')
@@ -46,11 +47,11 @@ export class ProductController {
         @Param('id') id: string,
         @Body() updateProductDto: UpdateProductDto,
     ) {
-        return this.updateProductService.update(id, updateProductDto);
+        return this.updateProductService.update(id,updateProductDto)
     }
 
     @Delete(':id')
     remove(@Param('id') id: string) {
-        return this.deleteProductService.delete(id);
+    return this.deleteProductService.delete(id)        
     }
 }

@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Attribute } from "src/modules/attribute/entities/attribute.entity";
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Category extends BaseEntity{
@@ -25,6 +26,10 @@ export class Category extends BaseEntity{
 
     @Column({default: 0})
     views: number
+
+    @ManyToMany(()=>Attribute, (attribute: Attribute)=> attribute.categories)
+    @JoinTable()
+    attributes: Attribute[]
 
     @Column({default: false})
     isFeatured: boolean
