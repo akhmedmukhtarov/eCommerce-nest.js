@@ -16,7 +16,7 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { UpdateProductService } from './services/update-product.service';
-import { PaginationDto } from './dto/pagination.dto';
+import { FindAllProductDto } from './dto/findAll-product.dto';
 
 @Controller('product')
 export class ProductController {
@@ -34,8 +34,8 @@ export class ProductController {
     }
 
     @Get()
-    findAll(@Query() paginationDto:PaginationDto) {
-        return this.findAllProductService.findAll(paginationDto)
+    findAll(@Query() findAllProductDto:FindAllProductDto) {
+        return this.findAllProductService.findAll(findAllProductDto)
     }
 
     @Get(':id')
