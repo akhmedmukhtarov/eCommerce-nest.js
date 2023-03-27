@@ -10,6 +10,7 @@ import { MediaModule } from './modules/media/media.module';
 import { AttributeModule } from './modules/attribute/attribute.module';
 import { AttributeValueModule } from './modules/attribute-value/attribute-value.module';
 import { BrandModule } from './modules/brand/brand.module';
+import { EventModule } from './modules/event/event.module';
 
 
 
@@ -24,6 +25,7 @@ import { BrandModule } from './modules/brand/brand.module';
         AttributeModule,
         AttributeValueModule,
         BrandModule,
+        EventModule,
     ],
     controllers: [],
     providers: [],

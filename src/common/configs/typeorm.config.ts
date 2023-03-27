@@ -6,8 +6,9 @@ import { Product } from 'src/modules/product/entities/product.entity';
 import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 import { Brand } from 'src/modules/brand/entities/brand.entity';
+import { Event } from 'src/modules/event/entities/event.entity';
 
-require('dotenv').config()
+require('dotenv').config();
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'mysql',
@@ -16,6 +17,15 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: 'sdb-nest',
-    entities: [User, Admin, Category, Product, Attribute, AttributeValue,Brand],
+    entities: [
+        User,
+        Admin,
+        Category,
+        Product,
+        Attribute,
+        AttributeValue,
+        Brand,
+        Event
+    ],
     synchronize: true,
 };
