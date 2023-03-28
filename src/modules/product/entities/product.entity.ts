@@ -6,6 +6,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    Generated,
     JoinTable,
     ManyToMany,
     PrimaryGeneratedColumn,
@@ -87,4 +88,8 @@ export class Product extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
+    
+
+    @Generated("uuid")
+    orderId: string
 }

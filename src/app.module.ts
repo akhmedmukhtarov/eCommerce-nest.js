@@ -11,6 +11,7 @@ import { AttributeModule } from './modules/attribute/attribute.module';
 import { AttributeValueModule } from './modules/attribute-value/attribute-value.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { EventModule } from './modules/event/event.module';
+import { OrderModule } from './modules/order/order.module';
 
 
 
@@ -26,6 +27,7 @@ import { EventModule } from './modules/event/event.module';
         AttributeValueModule,
         BrandModule,
         EventModule,
+        OrderModule,
     ],
     controllers: [],
     providers: [],
