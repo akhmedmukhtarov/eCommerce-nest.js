@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { FindAllOrdersDto } from './dto/findAll-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { CreateOrderService } from './services/create-order.service';
 import { FindAllOrderService } from './services/findAll-order.service';
@@ -17,8 +18,8 @@ export class OrderController {
   }
 
   @Get()
-  findAll() {
-    return this.findAllOrderService.findAll()
+  findAll(@Query() findAllOrdersDto: FindAllOrdersDto) {
+    return this.findAllOrderService.findAll(findAllOrdersDto)
   }
 
   @Get(':id')

@@ -25,9 +25,6 @@ export class Order extends BaseEntity{
     @ManyToOne(()=> Delivery, (delivery: Delivery)=> delivery.orders)
     delivery: Delivery
 
-    @OneToOne(()=> Product)
-    @JoinColumn()
-    product: Product
 
     @Column({default: 1})
     qty: number
@@ -43,4 +40,9 @@ export class Order extends BaseEntity{
 
     @UpdateDateColumn()
     updatedAt: Date
+
+    @ManyToOne(()=> Product)
+    @JoinColumn()
+    product: Product
+
 }

@@ -1,18 +1,19 @@
 
-import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 import {
     BaseEntity,
     Column,
     CreateDateColumn,
     Entity,
-    Generated,
     JoinTable,
     ManyToMany,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
+import { Order } from 'src/modules/order/entities/order.entity';
+
 
 @Entity()
 export class Product extends BaseEntity {
@@ -88,8 +89,7 @@ export class Product extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
-    
 
-    @Generated("uuid")
-    orderId: string
+    @OneToMany(()=> Order,(order: Order)=> order.product)
+    orders: Order[]
 }
