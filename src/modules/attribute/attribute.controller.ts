@@ -1,3 +1,4 @@
+import { FindAllAttirbuteDto } from './dto/findAll-attribute.dto';
 import { CreateAttributeService } from './services/create-attribute.service';
 import {
     Controller,
@@ -7,10 +8,11 @@ import {
     Patch,
     Param,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { UpdateAttributeDto } from './dto/update-attribute.dto';
-import { GetAllAttributeService } from './services/getAll-attribute.service';
+import { GetAllAttributeService } from './services/findAll-attribute.service';
 import { FindOneAttributeService } from './services/findOne-attribute.service';
 import { UpdateAttributeService } from './services/update-attribute.service';
 import { DeleteAttributeService } from './services/delete-attribute.service';
@@ -31,8 +33,8 @@ export class AttributeController {
     }
 
     @Get()
-    findAll() {
-        return this.getAllAttributeService.getAll();
+    findAll(@Query() findAllAttirbuteDto:FindAllAttirbuteDto) {
+        return this.getAllAttributeService.findAll(findAllAttirbuteDto);
     }
 
     @Get(':id')

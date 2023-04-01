@@ -1,68 +1,77 @@
 import { Injectable } from '@nestjs/common';
-import { Like } from 'typeorm';
+import { Pagination } from 'src/common/pagination/pagination';
+import { Category } from 'src/modules/category/entities/category.entity';
 import { FindAllProductDto } from '../dto/findAll-product.dto';
 import { Product } from '../entities/product.entity';
 
+require('dotenv').config();
 @Injectable()
 export class FindAllProductService {
     async findAll(findAllProductDto: FindAllProductDto) {
         try {
-            let { page, limit, attr, search }: any = findAllProductDto;
-            page = +page;
-            limit = +limit;
-            limit = limit || 15;
-            limit = limit > 15 ? 15 : limit;
-            const skippedItems = (page || 1 - 1) * +limit;
+            const {
+                page,
+                limit,
+                brand,
+                date,
+                isNew,
+                isFeatured,
+                orderCount,
+                viewCount,
+            }: any = findAllProductDto;
 
-            if (attr && search) {
-                const attributeValues = [];
-                attr = attr.split(',').map((el) => +el);
+            const maxLimitOfPagination =
+                process.env.MAX_PRODUCT_PAGINATION_LIMIT;
+
+            const pagination = new Pagination(
+                page,
+                limit,
+                maxLimitOfPagination,
+            );
+
+            const attributeValues = [];
+            if (findAllProductDto.attr) {
+                const attr = findAllProductDto.attr.split(',').map((el) => +el);
                 for (const attrValueId of attr) {
                     attributeValues.push({ id: attrValueId });
                 }
-
-                const products = await Product.find({
-                    where: {
-                        attributeValues,
-                        nameUz: Like(`%${search}%`)
-                    },
-                    take: limit,
-                    skip: skippedItems,
-                });
-                return products
-
-            } else if (attr) {
-                const attributeValues = [];
-                attr = attr.split(',').map((el) => +el);
-                for (const attrValueId of attr) {
-                    attributeValues.push({ id: attrValueId });
-                }
-
-                const products = await Product.find({
-                    where: {
-                        attributeValues,
-                    },
-                    take: limit,
-                    skip: skippedItems,
-                });
-
-                return products;
-            } else if (search) {
-                const products = await Product.find({
-                    take: limit,
-                    skip: skippedItems,
-                    where: {
-                        nameUz: Like(`%${search}%`)
-                    }
-                })
-                return products
-            } else {
-                const products = await Product.find({
-                    take: limit,
-                    skip: skippedItems,
-                });
-                return products
             }
+
+            const categories = [];
+            const category = await Category.findOneByOrFail({
+                id: +findAllProductDto.category,
+            });
+            categories.push({id: +category.id})
+            const childCategories = await Category.findBy({
+                parentId: +category.id,
+            });
+            for (const childCategory of childCategories) {
+                categories.push({id: +childCategory.id});
+                const grandchildCategories = await Category.findBy({
+                    parentId: childCategory.id,
+                });
+                for(const grandchildCategory of grandchildCategories){
+                    categories.push({id: +grandchildCategory.id})
+                }
+            }
+
+            const products = await Product.find({
+                where: {
+                    categories,
+                    attributeValues,
+                    brand: { id: +brand || null },
+                },
+                order: {
+                    createdAt: date || 'asc',
+                    isNew: isNew || 'asc',
+                    isFeatured: isFeatured || 'asc',
+                    orderCount: orderCount || 'asc',
+                    viewCount: viewCount || 'asc',
+                },
+                take: pagination.limit,
+                skip: pagination.skippedItems,
+            });
+            return products;
         } catch (err) {
             throw err;
         }

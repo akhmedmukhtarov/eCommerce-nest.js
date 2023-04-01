@@ -2,6 +2,7 @@ import { CreateAttributeDto } from '../dto/create-attribute.dto';
 
 import { Injectable } from '@nestjs/common';
 import { Attribute } from '../entities/attribute.entity';
+const crypto = require('crypto');
 
 @Injectable()
 export class CreateAttributeService {
@@ -15,7 +16,8 @@ export class CreateAttributeService {
                 .join('_')
                 .split('/')
                 .join('')
-                .toLowerCase();
+                .toLowerCase()
+                
             const attribute = Attribute.create({
                 nameRu,
                 nameUz,

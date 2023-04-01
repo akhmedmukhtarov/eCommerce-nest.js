@@ -5,10 +5,15 @@ import { Attribute } from '../entities/attribute.entity';
 export class FindOneAttributeService {
     async findOne(id: string) {
         try {
-            const attribute = await Attribute.findOneBy({ id: +id });
+            const attribute = await Attribute.findOneOrFail({
+                loadRelationIds: true,
+                where: {
+                    id: +id
+                }
+            });
             return attribute;
         } catch (err) {
-            throw err;
+            throw err.message;
         }
     }
 }

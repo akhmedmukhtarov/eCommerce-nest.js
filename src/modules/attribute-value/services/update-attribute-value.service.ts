@@ -6,7 +6,8 @@ import { AttributeValue } from '../entities/attribute-value.entity';
 export class UpdateAttributeValueService {
     async update(id: string, updateAttributeDto: UpdateAttributeDto) {
         try {
-            AttributeValue.update(+id, updateAttributeDto);
+            const result = await AttributeValue.update(+id, updateAttributeDto);
+            return result
         } catch (err) {
             throw err;
         }

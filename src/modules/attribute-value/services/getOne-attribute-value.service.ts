@@ -5,7 +5,12 @@ import { AttributeValue } from '../entities/attribute-value.entity';
 export class GetOneAttributeValueService {
     async getOne(id: string) {
         try {
-            const attributeValue = await AttributeValue.findOneBy({ id: +id });
+            const attributeValue = await AttributeValue.find({
+                loadRelationIds: true,
+                where:{
+                    id:+id
+                }
+            });
             return attributeValue;
         } catch (err) {
             throw err;

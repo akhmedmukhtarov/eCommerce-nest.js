@@ -34,4 +34,6 @@ export class CreateProductDto {
     // attributeId?: number[]
 
     attributeValueId?: number[]
+
+    brandId: number
 }

@@ -1,4 +1,6 @@
 import { Attribute } from "src/modules/attribute/entities/attribute.entity";
+import { Brand } from "src/modules/brand/entities/brand.entity";
+import { Product } from "src/modules/product/entities/product.entity";
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -12,7 +14,7 @@ export class Category extends BaseEntity{
     @Column({unique: true})
     nameRu: string
 
-    @Column()
+    @Column({default:null})
     images: string
 
     @Column()
@@ -30,6 +32,12 @@ export class Category extends BaseEntity{
     @ManyToMany(()=>Attribute, (attribute: Attribute)=> attribute.categories)
     @JoinTable()
     attributes: Attribute[]
+
+    @ManyToMany(()=> Brand,(brand:Brand)=> brand.categories)
+    brands: Brand[]
+
+    @ManyToMany(()=> Product, (product: Product)=> product.categories )
+    products: Product[]
 
     @Column({default: false})
     isFeatured: boolean

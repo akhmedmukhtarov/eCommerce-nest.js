@@ -7,12 +7,14 @@ import {
     Entity,
     JoinTable,
     ManyToMany,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 import { Order } from 'src/modules/order/entities/order.entity';
+import { Brand } from 'src/modules/brand/entities/brand.entity';
 
 
 @Entity()
@@ -62,7 +64,7 @@ export class Product extends BaseEntity {
     @Column({ type: 'bigint', default: null })
     discount: number;
 
-    @ManyToMany(() => Category)
+    @ManyToMany(() => Category,(category: Category)=> category.products)
     @JoinTable()
     categories: Category[];
 
@@ -92,4 +94,9 @@ export class Product extends BaseEntity {
 
     @OneToMany(()=> Order,(order: Order)=> order.product)
     orders: Order[]
+
+    @ManyToOne(()=> Brand,(brand:Brand)=> brand.products)
+    brand: Brand
+
+
 }

@@ -5,6 +5,7 @@ import { Product } from '../entities/product.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
+import { Brand } from 'src/modules/brand/entities/brand.entity';
 
 @Injectable()
 export class CreateProductService {
@@ -27,14 +28,15 @@ export class CreateProductService {
                 status,
                 images,
                 // attributeId,
-                attributeValueId
+                attributeValueId,
+                brandId
             } = createProductDto;
     
             const slug = nameUz.split("'").join('').split(' ').join('').split('/').join('').toLowerCase()
             
             const categories = []
             for(const id of categoryId){
-                const [category, ...rest] = await Category.findBy({id})
+                const category = await Category.findOneByOrFail({id})
                 categories.push(category)
             }
             
@@ -46,9 +48,11 @@ export class CreateProductService {
             
             const attributeValues = []
             for(const attrValueId of attributeValueId){
-                const attributeValue = await AttributeValue.findOneBy({id: attrValueId})
+                const attributeValue = await AttributeValue.findOneByOrFail({id: attrValueId})
                 attributeValues.push(attributeValue)
             }
+
+            const brand = await Brand.findOneByOrFail({id: +brandId})
 
             const product = Product.create({
                 nameUz,
@@ -68,7 +72,8 @@ export class CreateProductService {
                 images,
                 categories,
                 // attributes,
-                attributeValues
+                attributeValues,
+                brand
             })
             product.save()
         }catch(err){
