@@ -8,12 +8,6 @@ import { UpdateEventService } from './services/update-event.service';
 
 @Module({
     controllers: [EventController],
-    providers: [
-        CreateEventService,
-        FindAllEventService,
-        FindOneEventService,
-        UpdateEventService,
-        DeleteEventService
-    ],
+    providers: [CreateEventService, FindAllEventService, FindOneEventService, UpdateEventService, DeleteEventService],
 })
 export class EventModule {}

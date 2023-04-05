@@ -15,7 +15,7 @@ export class AdminRefreshTokenService extends AdminTokenService{
             const admin = await Admin.findOneBy({id:decryptedRefreshToken.id})
             const result = await bcrypt.compare(refreshToken, admin.hashedRefreshToken)
             if(result){
-                const {accessToken} = await this.generateRefreshAndAccessToken(admin.id)
+                const {accessToken} = await this.generateRefreshAndAccessToken(admin.id,admin.role)
                 return {accessToken}
             }else{
                 return new HttpException('', HttpStatus.UNAUTHORIZED)

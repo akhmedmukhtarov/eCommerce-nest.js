@@ -43,9 +43,6 @@ export class Product extends BaseEntity {
     @Column({ type: 'text', default: null })
     descriptionRu: string;
 
-    @Column()
-    quantity: number;
-
     @Column({ type: 'bigint' })
     price: number;
 

@@ -9,25 +9,11 @@ require('dotenv').config();
 export class FindAllProductService {
     async findAll(findAllProductDto: FindAllProductDto) {
         try {
-            const {
-                page,
-                limit,
-                brand,
-                date,
-                isNew,
-                isFeatured,
-                orderCount,
-                viewCount,
-            }: any = findAllProductDto;
+            const { page, limit, brand, date, isNew, isFeatured, orderCount, viewCount }: any = findAllProductDto;
 
-            const maxLimitOfPagination =
-                process.env.MAX_PRODUCT_PAGINATION_LIMIT;
+            const maxLimitOfPagination = process.env.MAX_PRODUCT_PAGINATION_LIMIT;
 
-            const pagination = new Pagination(
-                page,
-                limit,
-                maxLimitOfPagination,
-            );
+            const pagination = new Pagination(page, limit, maxLimitOfPagination);
 
             const attributeValues = [];
             if (findAllProductDto.attr) {
@@ -38,24 +24,26 @@ export class FindAllProductService {
             }
 
             const categories = [];
-            const category = await Category.findOneByOrFail({
-                id: +findAllProductDto.category,
-            });
-            categories.push({id: +category.id})
-            const childCategories = await Category.findBy({
-                parentId: +category.id,
-            });
-            for (const childCategory of childCategories) {
-                categories.push({id: +childCategory.id});
-                const grandchildCategories = await Category.findBy({
-                    parentId: childCategory.id,
+            if (findAllProductDto.category) {
+                const category = await Category.findOneByOrFail({
+                    id: +findAllProductDto.category,
                 });
-                for(const grandchildCategory of grandchildCategories){
-                    categories.push({id: +grandchildCategory.id})
+                categories.push({ id: +category.id });
+                const childCategories = await Category.findBy({
+                    parentId: +category.id,
+                });
+                for (const childCategory of childCategories) {
+                    categories.push({ id: +childCategory.id });
+                    const grandchildCategories = await Category.findBy({
+                        parentId: childCategory.id,
+                    });
+                    for (const grandchildCategory of grandchildCategories) {
+                        categories.push({ id: +grandchildCategory.id });
+                    }
                 }
             }
 
-            const products = await Product.find({
+            const products = await Product.findAndCount({
                 where: {
                     categories,
                     attributeValues,

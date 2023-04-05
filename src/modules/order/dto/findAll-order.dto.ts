@@ -6,6 +6,6 @@ export class FindAllOrdersDto{
 
     to: string
 
-    status?: 'pending'|'processing'| 'onTheWay'|'delivered'|'canceled'
+    status?: 'pending'|'processing'| 'ontheway'|'delivered'|'cancelled'
 
 }

@@ -1,21 +1,14 @@
 import { FindAllAttirbuteDto } from './dto/findAll-attribute.dto';
 import { CreateAttributeService } from './services/create-attribute.service';
-import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Patch,
-    Param,
-    Delete,
-    Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { UpdateAttributeDto } from './dto/update-attribute.dto';
 import { GetAllAttributeService } from './services/findAll-attribute.service';
 import { FindOneAttributeService } from './services/findOne-attribute.service';
 import { UpdateAttributeService } from './services/update-attribute.service';
 import { DeleteAttributeService } from './services/delete-attribute.service';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 @Controller('attribute')
 export class AttributeController {
@@ -27,13 +20,14 @@ export class AttributeController {
         private readonly deleteAttributeService: DeleteAttributeService,
     ) {}
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createAttributeDto: CreateAttributeDto) {
         return this.createAttributeService.create(createAttributeDto);
     }
 
     @Get()
-    findAll(@Query() findAllAttirbuteDto:FindAllAttirbuteDto) {
+    findAll(@Query() findAllAttirbuteDto: FindAllAttirbuteDto) {
         return this.getAllAttributeService.findAll(findAllAttirbuteDto);
     }
 
@@ -42,14 +36,13 @@ export class AttributeController {
         return this.findOneAttributeService.findOne(id);
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateAttributeDto: UpdateAttributeDto,
-    ) {
+    update(@Param('id') id: string, @Body() updateAttributeDto: UpdateAttributeDto) {
         return this.updateAttributeService.update(id, updateAttributeDto);
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.deleteAttributeService.delete(id);

@@ -17,7 +17,7 @@ export class SetModeratorService {
             });
             moderator.save();
         } catch (err) {
-            throw err
+            throw err;
         }
     }
 }

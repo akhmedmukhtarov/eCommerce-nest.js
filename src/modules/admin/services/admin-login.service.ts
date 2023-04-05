@@ -11,7 +11,7 @@ export class AdminLoginService extends AdminTokenService {
             const { username, password } = adminLoginDto;
             // const hashedPassword = await bcrypt.hash(password, 10)
             // const a = Admin.create({username,hashedPassword,role:'admin'})
-            // a.save()
+            // await a.save()
             const admin = await Admin.findOneBy({ username });
             const result = await bcrypt.compare(password, admin.hashedPassword);
             if (!result) {
@@ -21,7 +21,7 @@ export class AdminLoginService extends AdminTokenService {
                 );
             }
             const { accessToken, refreshToken } =
-                await this.generateRefreshAndAccessToken(admin.id);
+                await this.generateRefreshAndAccessToken(admin.id,admin.role);
             const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
             Admin.update(admin.id, { hashedRefreshToken });
             return { accessToken, refreshToken };

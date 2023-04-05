@@ -1,12 +1,4 @@
-import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Patch,
-    Param,
-    Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CreateAttributeValueDto } from './dto/create-attribute-value.dto';
 import { UpdateAttributeValueDto } from './dto/update-attribute-value.dto';
 import { CreateAttributeValueService } from './services/create-attribute-value.service';
@@ -14,6 +6,8 @@ import { FindAllAttributeValueService } from './services/findAll-attribute-valuv
 import { GetOneAttributeValueService } from './services/getOne-attribute-value.service';
 import { UpdateAttributeValueService } from './services/update-attribute-value.service';
 import { DeleteAttributeVAlueService } from './services/delete-attribute-value.service';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @Controller('attribute-value')
 export class AttributeValueController {
@@ -25,11 +19,12 @@ export class AttributeValueController {
         private readonly deleteAttributeVAlueService: DeleteAttributeVAlueService,
     ) {}
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createAttributeValueDto: CreateAttributeValueDto) {
         return this.createAttributeValueService.create(createAttributeValueDto);
     }
-
+    
     @Get()
     findAll() {
         return this.findAllAttributeValueService.findAll();
@@ -40,17 +35,13 @@ export class AttributeValueController {
         return this.getOneAttributeValueService.getOne(id);
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateAttributeValueDto: UpdateAttributeValueDto,
-    ) {
-        return this.updateAttributeValueService.update(
-            id,
-            updateAttributeValueDto,
-        );
+    update(@Param('id') id: string, @Body() updateAttributeValueDto: UpdateAttributeValueDto) {
+        return this.updateAttributeValueService.update(id, updateAttributeValueDto);
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.deleteAttributeVAlueService.delete(id);

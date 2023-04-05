@@ -6,15 +6,8 @@ import { Event } from '../entities/event.entity';
 export class CreateEventService {
     create(createEventDto: CreateEventDto) {
         try {
-            const { titleRu, titleUz, position, image, url, startsAt, endsAt } =
-                createEventDto;
-            const slug = titleUz
-                .split(' ')
-                .join('')
-                .split("'")
-                .join('')
-                .split('/')
-                .join('');
+            const { titleRu, titleUz, position, image, url, startsAt, endsAt } = createEventDto;
+            const slug = titleUz.split(' ').join('').split("'").join('').split('/').join('');
             const event = Event.create({
                 titleRu,
                 titleUz,

@@ -4,8 +4,6 @@ type ProductIdAndQty = {
 }
 export class CreateOrderDto {
 
-    userid: number
-
     productIdAndQty: ProductIdAndQty[]
 
     paymentStatus: "paid"|"unpaid"
@@ -14,7 +12,7 @@ export class CreateOrderDto {
 
     note?: string
 
-    status?: 'pending'|'processing'| 'onTheWay'|'delivered'|'canceled'
+    status?: 'pending'|'processing'| 'ontheway'|'delivered'|'cancelled'
 
     deliveryPrice?: number
 

@@ -7,22 +7,12 @@ import { Product } from 'src/modules/product/entities/product.entity';
 
 @Injectable()
 export class CreateOrderService {
-    async create(createOrderDto: CreateOrderDto) {
+    async create(createOrderDto: CreateOrderDto, req: any) {
         try {
-            const {
-                userid,
-                productIdAndQty,
-                deliveryAddress,
-                deliveryPhone,
-                paymentStatus,
-                paymentMethod,
-                note,
-                status,
-                deliveryPrice,
-            } = createOrderDto;
-            
-            const user = await User.findOneByOrFail({ id: +userid });
-            for (const productInfo of productIdAndQty){
+            const { productIdAndQty, deliveryAddress, deliveryPhone, paymentStatus, paymentMethod, note, status, deliveryPrice } = createOrderDto;
+
+            const user = await User.findOneByOrFail({ id: +req.id });
+            for (const productInfo of productIdAndQty) {
                 const product = await Product.findOneByOrFail({
                     id: productInfo.productId,
                 });
@@ -33,6 +23,7 @@ export class CreateOrderService {
                 const product = await Product.findOneByOrFail({
                     id: productInfo.productId,
                 });
+                Product.update({id: product.id},{orderCount: product.orderCount+1})
                 const qty = productInfo.qty ? productInfo.qty : 1;
                 totalPrice += +product.price * qty;
                 const order = Order.create({
@@ -54,9 +45,9 @@ export class CreateOrderService {
                 deliveryAddress,
                 deliveryPhone,
             });
-            delivery.save();
+            await delivery.save();
         } catch (error) {
-            throw  error;
+            throw error;
         }
     }
 }

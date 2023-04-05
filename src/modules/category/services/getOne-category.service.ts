@@ -6,12 +6,10 @@ export class GetOneCategoryService {
     async getOneCategory(id: string) {
         try {
             const category = await Category.find({
-                where: {
-                    id: +id
-                },
+                where: [{ id: +id }, { parentId: +id }],
                 relations: ['products', 'attributes'],
                 loadEagerRelations: true,
-                order: {nameUz: 'ASC'}
+                order: { nameUz: 'ASC' },
             });
             return category;
         } catch (err) {

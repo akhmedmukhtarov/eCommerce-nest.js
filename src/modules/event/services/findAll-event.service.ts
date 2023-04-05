@@ -8,7 +8,7 @@ export class FindAllEventService {
             const events = await Event.find();
             return events;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 }

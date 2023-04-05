@@ -24,7 +24,7 @@ export class Delivery extends BaseEntity{
         enum: ['pending','processing', 'ontheway','delivered','canceled'],
         default: 'pending'
     })
-    status: 'pending'|'processing'| 'onTheWay'|'delivered'|'canceled'
+    status: 'pending'|'processing'| 'ontheway'|'delivered'|'cancelled'
 
     @Column({default: null})
     deliveryPrice: number
