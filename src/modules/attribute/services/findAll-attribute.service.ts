@@ -6,11 +6,13 @@ import { Attribute } from '../entities/attribute.entity';
 export class GetAllAttributeService {
     async findAll(findAllAttirbuteDto: FindAllAttirbuteDto) {
         try {
-            let { categ}: any = findAllAttirbuteDto;
+            let {categ}: any = findAllAttirbuteDto;
+            categ = await categ
+            console.log(categ);
+            
 
             const categories = [];
             if (categ) {
-                categ = categ.split(',');
                 for (const id of categ) {
                     categories.push({ id: +id });
                 }
@@ -21,10 +23,6 @@ export class GetAllAttributeService {
                 },
             });
             return attributes;
-            // const attributes = await Attribute.find({loadRelationIds: true})
-            // return attributes
-
-            // .leftJoinAndSelect(await AttributeValue.findBy({attribute: }))
         } catch (err) {
             throw err;
         }

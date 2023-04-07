@@ -12,6 +12,7 @@ import { FindAllUserDto } from './dto/findAll-user.dto';
 import { FindAllUserService } from './services/findAll-users.service';
 import { DeleteUserservice } from './services/delete-user.service';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { LogoutUserService } from './services/logout-user.service';
 
 @Controller('user')
 export class AuthController {
@@ -22,6 +23,7 @@ export class AuthController {
         private findAllUserService: FindAllUserService,
         private deleteUserservice: DeleteUserservice,
         private getOneUserService: GetOneUserService,
+        private logoutUserService:LogoutUserService
     ) {}
 
     @Post('login')
@@ -55,5 +57,11 @@ export class AuthController {
     @Delete(':id')
     delete(@Param('id') id: string) {
         return this.deleteUserservice.delete(id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('logout')
+    logout(@Req() req:any){
+        this.logoutUserService.logout(req)
     }
 }

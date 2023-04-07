@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller';
 import { FindAllUserService } from './services/findAll-users.service';
 import { DeleteUserservice } from './services/delete-user.service';
 import { GetOneUserService } from './services/getOne-user.service';
+import { LogoutUserService } from './services/logout-user.service';
 
 @Module({
     controllers: [AuthController],
@@ -15,7 +16,8 @@ import { GetOneUserService } from './services/getOne-user.service';
         RefreshTokenService,
         FindAllUserService,
         DeleteUserservice,
-        GetOneUserService
+        GetOneUserService,
+        LogoutUserService
     ],
 })
 export class AuthModule {}

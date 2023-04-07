@@ -9,14 +9,10 @@ import { Product } from 'src/modules/product/entities/product.entity';
 export class CreateOrderService {
     async create(createOrderDto: CreateOrderDto, req: any) {
         try {
-            const { productIdAndQty, deliveryAddress, deliveryPhone, paymentStatus, paymentMethod, note, status, deliveryPrice } = createOrderDto;
+            let { productIdAndQty, deliveryAddress, deliveryPhone, paymentStatus, paymentMethod, note, status, deliveryPrice } = createOrderDto;
+            paymentStatus = await paymentStatus
 
             const user = await User.findOneByOrFail({ id: +req.id });
-            for (const productInfo of productIdAndQty) {
-                const product = await Product.findOneByOrFail({
-                    id: productInfo.productId,
-                });
-            }
             const orders = [];
             let totalPrice = deliveryPrice ? deliveryPrice : 0;
             for (const productInfo of productIdAndQty) {

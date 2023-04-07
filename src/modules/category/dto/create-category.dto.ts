@@ -1,26 +1,49 @@
-import { Transform } from "class-transformer"
-import { IsBoolean, IsNotEmpty } from "class-validator"
+import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, isInt, validate } from 'class-validator';
+import { Category } from '../entities/category.entity';
+const dataSource = require('mysql2')
 
-export class CreateCategoryDto{
-    
-    nameUz: string
+export class CreateCategoryDto {
+    @IsDefined()
+    @IsString()
+    @IsNotEmpty()
+    nameUz: string;
 
-    nameRu: string
+    @IsDefined()
+    @IsString()
+    @IsNotEmpty()
+    nameRu: string;
 
+    @IsOptional()
+    @Transform(async ({value}): Promise<number> =>{
+        if(value !== 0){
+            const category = await Category.findOneBy({id: value})
+            if(!category){
+                throw new HttpException(`Category with id: ${value} not found`, HttpStatus.NOT_FOUND)
+            }
+            return value
+        }
+        return value
+        
+    })
     parentId?: number
 
-    position?: string
 
-    isFeatured?: boolean
+    @IsOptional()
+    @IsString()
+    position?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsBoolean()
-    @Transform(({value}) => value === 1 ? true : false)
-    status?: boolean
+    isFeatured?: boolean;
 
-    images: string
+    @IsOptional()
+    @IsBoolean()
+    status?: boolean;
+
+    @IsString()
+    @IsDefined()
+    @IsNotEmpty()
+    images: string;
 }
-
-/**
- * [{url: "123.jpg", garbage: 123}]
- */

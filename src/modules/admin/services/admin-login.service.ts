@@ -13,7 +13,9 @@ export class AdminLoginService extends AdminTokenService {
             // const a = Admin.create({username,hashedPassword,role:'admin'})
             // await a.save()
             const admin = await Admin.findOneBy({ username });
+            
             const result = await bcrypt.compare(password, admin.hashedPassword);
+            
             if (!result) {
                 return new HttpException(
                     'Wrong username/password',

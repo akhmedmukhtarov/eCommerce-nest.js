@@ -1,39 +1,105 @@
-import { Category } from "src/modules/category/entities/category.entity"
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
+import { Brand } from 'src/modules/brand/entities/brand.entity';
+import { Category } from 'src/modules/category/entities/category.entity';
 
 export class CreateProductDto {
-    nameUz: string
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    nameUz: string;
 
-    nameRu: string
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    nameRu: string;
 
-    descShortUz?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    descShortUz?: string;
 
-    descShortRu?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    descShortRu?: string;
 
-    descriptionUz?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    descriptionUz?: string;
 
-    descriptionRu?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    descriptionRu?: string;
 
-    quantity: number
+    @IsOptional()
+    @IsInt()
+    quantity?: number;
 
-    price: number
+    @IsNumber()
+    price: number;
 
-    isFeatured?: boolean
+    @IsOptional()
+    @IsBoolean()
+    isFeatured?: boolean;
 
-    isPopular?: boolean
+    @IsOptional()
+    @IsBoolean()
+    isPopular?: boolean;
 
-    isNew?: boolean
+    @IsOptional()
+    @IsBoolean()
+    isNew?: boolean;
 
-    discount?: number
+    @IsOptional()
+    @IsNumber()
+    discount?: number;
 
-    categoryId?: number[]
+    @IsNotEmpty()
+    @Transform(async ({ value }) => {
+        for (const categoryId of value) {
+            const category = await Category.findOneBy({ id: +categoryId });
+            if(!category){
+                throw new HttpException(`Category with Id: ${categoryId} not found`, HttpStatus.NOT_FOUND)
+            }
+        }
+        return value
+    })
+    categoryId: number[];
 
-    status?: boolean
+    @IsOptional()
+    @IsBoolean()
+    status?: boolean;
 
-    images: string
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
+    images: string;
 
-    // attributeId?: number[]
+    @IsNotEmpty()
+    @Transform(async ({value}) => {
+        for(const attributeValueId of value){
+            const attributeValue = await AttributeValue.findOneBy({id: +attributeValueId})
+            if(!attributeValue){
+                throw new HttpException(`Attribute value with id: ${attributeValueId} not found`, HttpStatus.NOT_FOUND)
+            }
+        } 
+        return value
+    })
+    attributeValueId?: number[];
 
-    attributeValueId?: number[]
 
-    brandId: number
+    @IsNotEmpty()
+    @Transform(async ({value}) => {
+        const brand = await Brand.findOneBy({id: +value})
+        if(!brand){
+            throw new HttpException(`Brand with id: ${value} not found`, HttpStatus.NOT_FOUND)
+        }
+        return value
+    })
+    brandId: number;
 }

@@ -13,7 +13,7 @@ export class FindAllUserService {
         const pagination = new Pagination(page, limit, maxUserPaginationLimit)
         const users = User.find({
             where: {
-                phone: Like(`%${search}%`)
+                phone: Like(`%${search || ""}%`) 
             },
             // loadRelationIds: true,
             take: pagination.limit,

@@ -8,7 +8,9 @@ export class CreateAttributeValueService {
     async create(createAttributeValueDto: CreateAttributeValueDto) {
         try {
             const { nameUz, nameRu, attributeId } = createAttributeValueDto;
-            const attribute = await Attribute.findOneBy({ id: +attributeId });
+
+            const attribute = await Attribute.findOneBy({ id: await attributeId });
+
             const attributeValue = AttributeValue.create({
                 nameUz,
                 nameRu,
@@ -16,7 +18,7 @@ export class CreateAttributeValueService {
             });
             attributeValue.save();
         } catch (err) {
-            throw err
+            throw err;
         }
     }
 }

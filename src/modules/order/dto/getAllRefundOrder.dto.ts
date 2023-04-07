@@ -1,7 +1,27 @@
+import { IsBoolean, IsInt, IsOptional, Max, Min } from "class-validator"
+
 export class GetAllRefundOrderDto{
-    year?: number
+    
+    @IsOptional()
+    @IsInt()
+    @Min(0)
+    @Max(new Date().getFullYear())
+    year: number
+    
+
+    @IsOptional()
+    @IsInt()
+    @Min(0)
+    @Max(11)
     month?: number
+
+    @IsOptional()
+    @IsInt()
+    @Min(1)
+    @Max(31)
     day?: number
 
-    refunded: boolean
+    @IsOptional()
+    @IsBoolean()
+    refunded?: boolean
 }

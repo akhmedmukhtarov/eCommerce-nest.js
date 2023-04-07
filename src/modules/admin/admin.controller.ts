@@ -26,10 +26,11 @@ export class AdminCategories {
         return this.adminLoginService.adminLogin(adminLoginDto);
     }
 
+
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('admin')
-    @Put('setmoderator')
-    setModerator(setModeratorDto: SetModeratorDto) {
+    @Post('setmoderator')
+    setModerator(@Body() setModeratorDto: SetModeratorDto) {
         return this.setModeratorService.setModerator(setModeratorDto);
     }
 

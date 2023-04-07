@@ -23,8 +23,8 @@ export class CategoryController {
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
-    create(@Body() createCategoryDto: CreateCategoryDto) {
-        return this.createCategoryService.create(createCategoryDto);
+    async create(@Body() createCategoryDto: CreateCategoryDto) {
+            return await this.createCategoryService.create(createCategoryDto);
     }
 
     @Get()

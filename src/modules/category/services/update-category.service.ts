@@ -12,7 +12,7 @@ export class UpdateCategoryService {
                 Category.update(+id, {
                     nameUz,
                     nameRu,
-                    parentId,
+                    parentId: await parentId,
                     position,
                     isFeatured,
                     status,
@@ -22,7 +22,7 @@ export class UpdateCategoryService {
             Category.update(+id, {
                 nameUz,
                 nameRu,
-                parentId,
+                parentId: await parentId,
                 position,
                 isFeatured,
                 status,

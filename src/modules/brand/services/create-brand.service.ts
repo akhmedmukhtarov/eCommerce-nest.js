@@ -8,8 +8,11 @@ import { Brand } from '../entities/brand.entity';
 export class CreateBrandService {
     async create(createBrandDto: CreateBrandDto) {
         try {
-            const { nameRu, nameUz, images, isFeatured, status , categoryId} =
+            let { nameRu, nameUz, images, isFeatured, status , categoryId} =
                 createBrandDto;
+            
+            categoryId = await categoryId
+            
 
             const categories = []
             for(const id of categoryId){

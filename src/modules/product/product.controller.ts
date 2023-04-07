@@ -8,6 +8,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { UpdateProductService } from './services/update-product.service';
 import { FindAllProductDto } from './dto/findAll-product.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 @Controller('product')
 export class ProductController {
@@ -19,6 +20,7 @@ export class ProductController {
         private deleteProductService: DeleteProductService,
     ) {}
 
+    // @UseGuards(JwtAuthGuard,RolesGuard)
     @Post()
     create(@Body() createProductDto: CreateProductDto) {
         return this.createProductService.create(createProductDto);
@@ -34,11 +36,13 @@ export class ProductController {
         return this.findOneProductservice.findOne(id);
     }
 
+    @UseGuards(JwtAuthGuard,RolesGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
         return this.updateProductService.update(id, updateProductDto);
     }
 
+    @UseGuards(JwtAuthGuard,RolesGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.deleteProductService.delete(id);

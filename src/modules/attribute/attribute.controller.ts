@@ -27,7 +27,7 @@ export class AttributeController {
     }
 
     @Get()
-    findAll(@Query() findAllAttirbuteDto: FindAllAttirbuteDto) {
+    findAll(@Body() findAllAttirbuteDto: FindAllAttirbuteDto) {
         return this.getAllAttributeService.findAll(findAllAttirbuteDto);
     }
 

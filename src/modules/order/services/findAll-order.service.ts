@@ -1,31 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { Between } from 'typeorm';
 import { FindAllOrdersDto } from '../dto/findAll-order.dto';
 import { Delivery } from '../entities/delivery.entity';
+import { Pagination } from 'src/common/pagination/pagination';
+require('dotenv').config()
 
 @Injectable()
 export class FindAllOrderService {
     async findAll(findAllOrdersDto: FindAllOrdersDto, req: any) {
-        const [fromYear, fromMonth, fromDay] = findAllOrdersDto.from.split('/');
-        const [toYear, toMonth, toDay] = findAllOrdersDto.to.split('/');
         try {
+            const {page,limit,status} = findAllOrdersDto
+            const ordersPagination = new Pagination(page,limit,process.env.MAX_ORDER_PAGINATION_LIMIT)
             if (req.role === 'user') {
                 const orders = await Delivery.find({
                     relations: ['orders'],
                     loadEagerRelations: true,
                     where: {
                         user: {
-                            id: +findAllOrdersDto.userId || null,
+                            id: +req.id || null,
                         },
-                        status: findAllOrdersDto.status,
-                        createdAt: Between(new Date(+fromYear, +fromMonth, +fromDay), new Date(+toYear, +toMonth, +toDay) || new Date()),
+                        status: status,
                     },
+                    take: ordersPagination.limit,
+                    skip: ordersPagination.skippedItems
                 });
                 return orders;
             } else {
                 const orders = await Delivery.find({
                     relations: ['orders'],
                     loadEagerRelations: true,
+                    where:{
+                        status: status,
+                    },
+                    take: ordersPagination.limit,
+                    skip: ordersPagination.skippedItems
                 });
                 return orders;
             }
