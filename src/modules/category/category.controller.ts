@@ -9,8 +9,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } fro
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 require('dotenv').config();
 
+@ApiTags('category')
 @Controller('category')
 export class CategoryController {
     constructor(
@@ -21,6 +23,8 @@ export class CategoryController {
         private deleteCategoryService: DeleteCategoryService,
     ) {}
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     async create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -37,12 +41,16 @@ export class CategoryController {
         return this.getOneCategoryService.getOneCategory(id);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':id')
     updateCatgeory(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
         return this.updateCategoryService.updateCategory(id, updateCategoryDto);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     deleteCategory(@Param('id') id: string) {

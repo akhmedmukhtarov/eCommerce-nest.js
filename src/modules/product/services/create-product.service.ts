@@ -33,46 +33,44 @@ export class CreateProductService {
             categoryId = await categoryId
             attributeValueId = await attributeValueId
             brandId = await brandId
-            return {categoryId, attributeValueId, brandId}
     
-        //     const slug = nameUz.split("'").join('').split(' ').join('').split('/').join('').toLowerCase()
+            const slug = nameUz.split("'").join('').split(' ').join('').split('/').join('').toLowerCase()
             
-        //     const categories = []
-        //     for(const id of categoryId){
-        //         const category = await Category.findOneByOrFail({id})
-        //         categories.push(category)
-        //     }
+            const categories = []
+            for(const id of categoryId){
+                const category = await Category.findOneByOrFail({id})
+                categories.push(category)
+            }
 
             
-        //     const attributeValues = []
-        //     for(const attrValueId of attributeValueId){
-        //         const attributeValue = await AttributeValue.findOneByOrFail({id: attrValueId})
-        //         attributeValues.push(attributeValue)
-        //     }
+            const attributeValues = []
+            for(const attrValueId of attributeValueId){
+                const attributeValue = await AttributeValue.findOneByOrFail({id: attrValueId})
+                attributeValues.push(attributeValue)
+            }
 
-        //     const brand = await Brand.findOneByOrFail({id: +brandId})
+            const brand = await Brand.findOneByOrFail({id: +brandId})
 
-        //     const product = Product.create({
-        //         nameUz,
-        //         nameRu,
-        //         descShortUz,
-        //         descShortRu,
-        //         descriptionUz,
-        //         descriptionRu,
-        //         isFeatured,
-        //         isNew,
-        //         isPopular,
-        //         price,
-        //         discount,
-        //         status,
-        //         slug,
-        //         images,
-        //         categories,
-        //         // attributes,
-        //         attributeValues,
-        //         brand
-            // })
-            // product.save()
+            const product = Product.create({
+                nameUz,
+                nameRu,
+                descShortUz,
+                descShortRu,
+                descriptionUz,
+                descriptionRu,
+                isFeatured,
+                isNew,
+                isPopular,
+                price,
+                discount,
+                status,
+                slug,
+                images,
+                categories,
+                attributeValues,
+                brand
+            })
+            product.save()
         }catch(err){
             throw err
         }

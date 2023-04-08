@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
@@ -6,59 +7,72 @@ import { Brand } from 'src/modules/brand/entities/brand.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 
 export class CreateProductDto {
+    @ApiProperty()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     nameUz: string;
 
+    @ApiProperty()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     nameRu: string;
 
+    @ApiProperty()
     @IsOptional()
     @IsNotEmpty()
     @IsString()
     descShortUz?: string;
 
+    @ApiProperty()
     @IsOptional()
     @IsNotEmpty()
     @IsString()
     descShortRu?: string;
 
+    @ApiProperty()
     @IsOptional()
     @IsNotEmpty()
     @IsString()
     descriptionUz?: string;
 
+    @ApiProperty()
     @IsOptional()
     @IsNotEmpty()
     @IsString()
     descriptionRu?: string;
 
+    @ApiProperty()
     @IsOptional()
     @IsInt()
     quantity?: number;
 
+    @ApiProperty()
     @IsNumber()
     price: number;
 
+    @ApiProperty()
     @IsOptional()
     @IsBoolean()
     isFeatured?: boolean;
 
+    @ApiProperty()
     @IsOptional()
     @IsBoolean()
     isPopular?: boolean;
 
+    @ApiProperty()
     @IsOptional()
     @IsBoolean()
     isNew?: boolean;
 
+    @ApiProperty()
     @IsOptional()
     @IsNumber()
     discount?: number;
 
+    @ApiProperty()
     @IsNotEmpty()
     @Transform(async ({ value }) => {
         for (const categoryId of value) {
@@ -71,15 +85,18 @@ export class CreateProductDto {
     })
     categoryId: number[];
 
+    @ApiProperty()
     @IsOptional()
     @IsBoolean()
     status?: boolean;
 
+    @ApiProperty()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     images: string;
 
+    @ApiProperty()
     @IsNotEmpty()
     @Transform(async ({value}) => {
         for(const attributeValueId of value){
@@ -92,7 +109,7 @@ export class CreateProductDto {
     })
     attributeValueId?: number[];
 
-
+    @ApiProperty()
     @IsNotEmpty()
     @Transform(async ({value}) => {
         const brand = await Brand.findOneBy({id: +value})

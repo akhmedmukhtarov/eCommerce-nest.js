@@ -8,7 +8,9 @@ import { FindAllEventService } from './services/findAll-event.service';
 import { FindOneEventService } from './services/findOne-event.service';
 import { UpdateEventService } from './services/update-event.service';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('events')
 @Controller('event')
 export class EventController {
     constructor(
@@ -19,6 +21,8 @@ export class EventController {
         private readonly deleteEventService: DeleteEventService,
     ) {}
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createEventDto: CreateEventDto) {
@@ -35,12 +39,16 @@ export class EventController {
         return this.findOneEventService.finOne(id);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
         return this.updateEventService.update(id, updateEventDto);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {

@@ -10,8 +10,10 @@ import { AdminRefreshTokenService } from './services/admin-refreshToken.service'
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 require('dotenv').config();
 
+@ApiTags('admin registration and setting and/or deleting moderators')
 @Controller('admin')
 export class AdminCategories {
     constructor(
@@ -27,6 +29,8 @@ export class AdminCategories {
     }
 
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('admin')
     @Post('setmoderator')
@@ -39,6 +43,10 @@ export class AdminCategories {
         return this.adminRefreshTokenService.refresh(adminRefreshTokenDto);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin bearer token'})
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
     @Delete('delete')
     deleteModerator(@Body() username: string) {
         return this.adminDeleteModeratorService.deleteModerator(username);

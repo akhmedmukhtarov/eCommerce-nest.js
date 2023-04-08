@@ -1,7 +1,9 @@
-import { IsDefined, IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsDefined, IsJWT, IsNotEmpty, IsString } from "class-validator";
 
 export class AdminRefreshTokenDto {
-    @IsString()
+    @ApiProperty()
+    @IsJWT()
     @IsNotEmpty()
     @IsDefined()
     refreshToken: string

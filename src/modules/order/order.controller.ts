@@ -9,7 +9,8 @@ import { GetOneOrderService } from './services/getOne-order.service';
 import { RefundOrderService } from './services/refund-order.service';
 import { GetAllRefundOrderDto } from './dto/getAllRefundOrder.dto';
 import { GetRefundRequestedOrdersService } from './services/getRefundRequestedOrders.service';
-
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+@ApiTags('order')
 @Controller('order')
 export class OrderController {
     constructor(
@@ -20,39 +21,53 @@ export class OrderController {
         private readonly getRefundRequestedOrdersService:GetRefundRequestedOrdersService
     ) {}
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Post()
     create(@Body() createOrderDto: CreateOrderDto, @Req() req: any) {
         return this.createOrderService.create(createOrderDto, req);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Get()
     findAll(@Query() findAllOrdersDto: FindAllOrdersDto, @Req() req: any) {
         return this.findAllOrderService.findAll(findAllOrdersDto, req);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Get('view/:id')
     findOne(@Req() req: any,@Param('id') id:string) {
         return this.getOneOrderService.getOne(req,id);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Delete('delete/:id')
     remove(@Param('id') id: string) {}
     
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Post('refund')
     refund(@Body('id') id: number, @Req() req: any) {
         return this.refundOrderService.refund(id, req);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Patch('refund')
     refundAdmin(@Body('id') id: number) {}
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authozrization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('refund')
     getRefundRequestedOrders(@Body() getAllRefundOrderDto:GetAllRefundOrderDto){

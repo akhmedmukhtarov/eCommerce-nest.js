@@ -9,7 +9,9 @@ import { UpdateAttributeService } from './services/update-attribute.service';
 import { DeleteAttributeService } from './services/delete-attribute.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('attribute')
 @Controller('attribute')
 export class AttributeController {
     constructor(
@@ -20,6 +22,8 @@ export class AttributeController {
         private readonly deleteAttributeService: DeleteAttributeService,
     ) {}
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createAttributeDto: CreateAttributeDto) {
@@ -36,12 +40,16 @@ export class AttributeController {
         return this.findOneAttributeService.findOne(id);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateAttributeDto: UpdateAttributeDto) {
         return this.updateAttributeService.update(id, updateAttributeDto);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {

@@ -13,7 +13,9 @@ import { FindAllUserService } from './services/findAll-users.service';
 import { DeleteUserservice } from './services/delete-user.service';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { LogoutUserService } from './services/logout-user.service';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user auth')
 @Controller('user')
 export class AuthController {
     constructor(
@@ -41,24 +43,32 @@ export class AuthController {
         return this.refreshTokenService.refresh(token);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     findAllUsers(@Query() findAllUserDto: FindAllUserDto) {
         return this.findAllUserService.findAllUser(findAllUserDto);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Get(':id')
     getOne(@Param('id') id: string, @Req() req: any) {
         return this.getOneUserService.getOne(id,req);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     delete(@Param('id') id: string) {
         return this.deleteUserservice.delete(id);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Post('logout')
     logout(@Req() req:any){

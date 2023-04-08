@@ -9,7 +9,9 @@ import { UpdateProductService } from './services/update-product.service';
 import { FindAllProductDto } from './dto/findAll-product.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('product')
 @Controller('product')
 export class ProductController {
     constructor(
@@ -20,7 +22,9 @@ export class ProductController {
         private deleteProductService: DeleteProductService,
     ) {}
 
-    // @UseGuards(JwtAuthGuard,RolesGuard)
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
+    @UseGuards(JwtAuthGuard,RolesGuard)
     @Post()
     create(@Body() createProductDto: CreateProductDto) {
         return this.createProductService.create(createProductDto);
@@ -36,12 +40,16 @@ export class ProductController {
         return this.findOneProductservice.findOne(id);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
         return this.updateProductService.update(id, updateProductDto);
     }
 
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {
