@@ -6,7 +6,7 @@ import { VerifyOtpService } from './services/auth-verifyOtp.service';
 import { VerifyOtpDto } from './dto/verifyOtp.dto';
 import { RegisterDto } from './dto/register.dto';
 import { LoginService } from './services/auth-login.service';
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Query, Req, Patch } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { FindAllUserDto } from './dto/findAll-user.dto';
 import { FindAllUserService } from './services/findAll-users.service';
@@ -70,7 +70,7 @@ export class AuthController {
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
-    @Post('logout')
+    @Patch('logout')
     logout(@Req() req:any){
         this.logoutUserService.logout(req)
     }
