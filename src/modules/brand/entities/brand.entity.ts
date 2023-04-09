@@ -13,7 +13,7 @@ export class Brand extends BaseEntity {
     @Column()
     nameRu:string
 
-    @Column()
+    @Column({default: null})
     slug: string
 
     @Column({default: false})

@@ -3,9 +3,9 @@ import { Category } from '../entities/category.entity';
 
 @Injectable()
 export class DeleteCategoryService {
-    async deleteCategory(id: string) {
+    async deleteCategory(slug: string) {
         try {
-            const result = await Category.delete({ id: +id });
+            const result = await Category.delete({ slug });
             return result;
         } catch (err) {
             throw err;

@@ -1,14 +1,17 @@
 import { CreateEventDto } from '../dto/create-event.dto';
 import { Injectable } from '@nestjs/common';
 import { Event } from '../entities/event.entity';
+import { slugify } from 'src/common/helpers/slugify';
 
 @Injectable()
 export class CreateEventService {
-    create(createEventDto: CreateEventDto) {
+    async create(createEventDto: CreateEventDto) {
         try {
             const { titleRu, titleUz, position, image, url, startsAt, endsAt } = createEventDto;
-            const slug = titleUz.split(' ').join('').split("'").join('').split('/').join('');
-            const event = Event.create({
+
+            const slug = slugify(titleUz)
+            
+            let event = Event.create({
                 titleRu,
                 titleUz,
                 position,
@@ -18,7 +21,9 @@ export class CreateEventService {
                 endsAt,
                 slug,
             });
-            event.save();
+            event = await event.save();
+
+            const result = await Event.update({id: +event.id},{slug: slug + event.id})
         } catch (error) {
             throw error;
         }

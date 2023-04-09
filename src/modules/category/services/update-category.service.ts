@@ -4,12 +4,27 @@ import { Category } from '../entities/category.entity';
 
 @Injectable()
 export class UpdateCategoryService {
-    async updateCategory(id: string, updateCategoryDto: UpdateCategoryDto) {
+    async updateCategory(slug: string, updateCategoryDto: UpdateCategoryDto) {
         try {
             const { nameUz, nameRu, parentId, position, isFeatured, status, images } = updateCategoryDto;
             if (!images) {
-                const { images } = await Category.findOneBy({ id: +id });
-                Category.update(+id, {
+                const { images } = await Category.findOneBy({ slug });
+                Category.update(
+                    { slug },
+                    {
+                        nameUz,
+                        nameRu,
+                        parentId: await parentId,
+                        position,
+                        isFeatured,
+                        status,
+                        images,
+                    },
+                );
+            }
+            Category.update(
+                { slug },
+                {
                     nameUz,
                     nameRu,
                     parentId: await parentId,
@@ -17,17 +32,8 @@ export class UpdateCategoryService {
                     isFeatured,
                     status,
                     images,
-                });
-            }
-            Category.update(+id, {
-                nameUz,
-                nameRu,
-                parentId: await parentId,
-                position,
-                isFeatured,
-                status,
-                images,
-            });
+                },
+            );
         } catch (err) {
             throw err;
         }

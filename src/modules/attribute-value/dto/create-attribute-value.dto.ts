@@ -19,7 +19,7 @@ export class CreateAttributeValueDto {
     nameRu: string
 
     @ApiProperty()
-    @IsOptional()
+    @IsNotEmpty()
     @Transform(async ({value}) => {
         const attribute = await Attribute.findOneBy({id: +value})
         if(!attribute){

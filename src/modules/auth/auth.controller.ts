@@ -13,7 +13,7 @@ import { FindAllUserService } from './services/findAll-users.service';
 import { DeleteUserservice } from './services/delete-user.service';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { LogoutUserService } from './services/logout-user.service';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('user auth')
 @Controller('user')
@@ -43,6 +43,9 @@ export class AuthController {
         return this.refreshTokenService.refresh(token);
     }
 
+    @ApiQuery({name: 'page', required: false, schema: {type: 'integer'}})
+    @ApiQuery({name: 'limit', required: false, schema: {type: 'integer'}})
+    @ApiQuery({name: 'search', required: false, schema: {type: 'phone number of user'}})
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)

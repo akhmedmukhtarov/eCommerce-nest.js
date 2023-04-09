@@ -15,7 +15,6 @@ export class FindAllUserService {
             where: {
                 phone: Like(`%${search || ""}%`) 
             },
-            // loadRelationIds: true,
             take: pagination.limit,
             skip: pagination.skippedItems
         });

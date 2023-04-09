@@ -9,33 +9,35 @@ require('dotenv').config();
 export class FindAllProductService {
     async findAll(findAllProductDto: FindAllProductDto) {
         try {
-            const { page, limit, brand, date, isNew, isFeatured, orderCount, viewCount }: any = findAllProductDto;
+            const { page, limit, date, isNew, isFeatured, orderCount, viewCount }: any = findAllProductDto;
+
+            let attr:any = await findAllProductDto.attr
+            let category = await findAllProductDto.category
+            let brand = await findAllProductDto.brand
 
             const maxLimitOfPagination = process.env.MAX_PRODUCT_PAGINATION_LIMIT;
 
             const pagination = new Pagination(page, limit, maxLimitOfPagination);
 
             const attributeValues = [];
-            if (findAllProductDto.attr) {
-                const attr = findAllProductDto.attr.split(',').map((el) => +el);
-                for (const attrValueId of attr) {
-                    attributeValues.push({ id: attrValueId });
+            if (attr) {
+                attr = attr.split(',').map((el) => +el);
+                for (const attrValueSlug of attr) {
+                    attributeValues.push({slug : attrValueSlug });
                 }
             }
 
             const categories = [];
-            if (findAllProductDto.category) {
-                const category = await Category.findOneByOrFail({
-                    id: +findAllProductDto.category,
-                });
-                categories.push({ id: +category.id });
+            if (category) {
+                const categ = await Category.findOneByOrFail({slug: category});
+                categories.push({ id: +categ.id });
                 const childCategories = await Category.findBy({
-                    parentId: +category.id,
+                    parentId: +categ.id,
                 });
                 for (const childCategory of childCategories) {
                     categories.push({ id: +childCategory.id });
                     const grandchildCategories = await Category.findBy({
-                        parentId: childCategory.id,
+                        parentId: +childCategory.id,
                     });
                     for (const grandchildCategory of grandchildCategories) {
                         categories.push({ id: +grandchildCategory.id });
@@ -47,7 +49,7 @@ export class FindAllProductService {
                 where: {
                     categories,
                     attributeValues,
-                    brand: { id: +brand || null },
+                    brand: { slug: brand || null },
                 },
                 order: {
                     createdAt: date || 'asc',

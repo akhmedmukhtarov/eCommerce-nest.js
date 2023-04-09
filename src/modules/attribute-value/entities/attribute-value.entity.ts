@@ -13,6 +13,9 @@ export class AttributeValue extends BaseEntity {
     @ManyToMany(()=> Product, (product)=> product.attributeValues)
     products: Product[]
 
+    @Column({default: null})
+    slug: string
+
     @Column()
     nameUz:string
 

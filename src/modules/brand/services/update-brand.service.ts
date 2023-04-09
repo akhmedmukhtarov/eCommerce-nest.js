@@ -5,7 +5,7 @@ import { Category } from 'src/modules/category/entities/category.entity';
 
 @Injectable()
 export class UpdateBrandService {
-    async update(id: string, updateBrandDto: UpdateBrandDto) {
+    async update(slug: string, updateBrandDto: UpdateBrandDto) {
         try {
             let {nameUz,nameRu,images,status,isFeatured, categoryId} = updateBrandDto
             categoryId = await categoryId
@@ -15,7 +15,7 @@ export class UpdateBrandService {
                 const category = await Category.findOneBy({id})
                 categories.push(category)
             }
-            const result = await Brand.update({id:+id},{nameUz,nameRu,images,status,isFeatured,categories});
+            const result = await Brand.update({slug},{nameUz,nameRu,images,status,isFeatured,categories});
             return result;
         } catch (err) {
             throw err;

@@ -3,9 +3,9 @@ import { Event } from '../entities/event.entity';
 
 @Injectable()
 export class FindOneEventService {
-    async finOne(id: string) {
+    async finOne(slug: string) {
         try {
-            const event = await Event.findOneBy({ id: +id });
+            const event = await Event.findOneBy({ slug });
             return event;
         } catch (error) {
             throw error;

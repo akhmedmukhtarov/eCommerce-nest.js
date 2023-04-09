@@ -3,12 +3,12 @@ import { Attribute } from '../entities/attribute.entity';
 
 @Injectable()
 export class FindOneAttributeService {
-    async findOne(id: string) {
+    async findOne(slug: string) {
         try {
             const attribute = await Attribute.findOneOrFail({
                 loadRelationIds: true,
                 where: {
-                    id: +id
+                    slug
                 }
             });
             return attribute;

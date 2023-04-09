@@ -3,9 +3,9 @@ import { AttributeValue } from '../entities/attribute-value.entity';
 
 @Injectable()
 export class DeleteAttributeVAlueService {
-    async delete(id: string) {
+    async delete(slug: string) {
         try {
-            AttributeValue.delete({ id: +id });
+            await AttributeValue.delete({slug});
         } catch (err) {
             throw err;
         }

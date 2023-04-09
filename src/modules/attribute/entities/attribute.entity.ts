@@ -21,9 +21,6 @@ export class Attribute extends BaseEntity {
     )
     values: AttributeValue[];
 
-    // @ManyToMany(()=> Product, (product: Product) => product.attributes)
-    // products: Product[]
-
     @ManyToMany(()=> Category, (category: Category)=> category.attributes)
     categories: Category[]
 
@@ -33,7 +30,7 @@ export class Attribute extends BaseEntity {
     @Column()
     nameRu: string;
 
-    @Column()
+    @Column({default: null})
     slug: string;
 
     @Column({ default: true })

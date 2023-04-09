@@ -2,6 +2,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsDefined, IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 import { Brand } from 'src/modules/brand/entities/brand.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 
@@ -19,15 +20,24 @@ export class FindAllProductDto {
 
     @ApiProperty()
     @IsOptional()
-    @IsString()
+    @Transform(async ({value}) => {
+        const attrValueSlugs = value.split(',')
+        for(const attrValueSlug of attrValueSlugs){
+            const attrValue = await AttributeValue.findOneBy({slug: attrValueSlug})
+            if(!attrValue){
+                throw new HttpException(`Attribute value with slug:${attrValueSlug} not found`, HttpStatus.NOT_FOUND)
+            }
+        }
+        return value
+    })
     attr?: string;
 
     @ApiProperty()
     @IsOptional()
     @Transform(async ({ value }) => {
-        const category = await Category.findOneBy({ id: +value });
+        const category = await Category.findOneBy({slug: value });
         if (!category) {
-            throw new HttpException(`Category with id: ${value} not found`, HttpStatus.NOT_FOUND);
+            throw new HttpException(`Category with slug: ${value} not found`, HttpStatus.NOT_FOUND);
         }
         return value;
     })
@@ -36,15 +46,16 @@ export class FindAllProductDto {
     @ApiProperty()
     @IsOptional()
     @Transform(async ({ value }) => {
-        const brand = await Brand.findOneBy({ id: +value });
+        const brand = await Brand.findOneBy({ slug: value });
         if (!brand) {
-            throw new HttpException(`Category with id: ${value} not found`, HttpStatus.NOT_FOUND);
+            throw new HttpException(`Category with slug: ${value} not found`, HttpStatus.NOT_FOUND);
         }
         return value;
     })
     brand?: string;
 
     @ApiProperty()
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -52,6 +63,7 @@ export class FindAllProductDto {
     date: ascDesc;
 
     @ApiProperty()
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -59,6 +71,7 @@ export class FindAllProductDto {
     isnew: ascDesc;
 
     @ApiProperty()
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -66,6 +79,7 @@ export class FindAllProductDto {
     isfeatured: ascDesc;
 
     @ApiProperty()
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -73,6 +87,7 @@ export class FindAllProductDto {
     orderCount: ascDesc;
 
     @ApiProperty()
+    @IsOptional()
     @IsDefined()
     @IsNotEmpty()
     @IsString()

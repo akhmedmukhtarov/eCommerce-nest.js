@@ -5,11 +5,14 @@ import { GetAllCategoriesService } from './services/getAll-category.service';
 import { CreateCategoryService } from './services/create-category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { FindAllCategoryDto } from './dto/findAll-category.dto';
+import { DeleteMediaCategoryDto } from './dto/deleteMedia-category.dto';
+import { DeleteMediaCategoryService } from './services/deleteMedia-category.service';
 require('dotenv').config();
 
 @ApiTags('category')
@@ -21,6 +24,7 @@ export class CategoryController {
         private getOneCategoryService: GetOneCategoryService,
         private updateCategoryService: UpdateCategoryService,
         private deleteCategoryService: DeleteCategoryService,
+        private deleteMediaCategoryService:DeleteMediaCategoryService
     ) {}
 
     @ApiBearerAuth()
@@ -31,29 +35,39 @@ export class CategoryController {
             return await this.createCategoryService.create(createCategoryDto);
     }
 
+    @ApiQuery({name: 'limit', required: false, description: 'pagination limit'})
+    @ApiQuery({name: 'page', required: false, description: 'pagination page'})
     @Get()
-    getAllCategories() {
-        return this.getAllCategoriesService.getAllCategories();
+    getAllCategories(@Query() findAllCategoryDto: FindAllCategoryDto) {
+        return this.getAllCategoriesService.getAllCategories(findAllCategoryDto);
     }
 
-    @Get(':id')
-    getOneCategory(@Param('id') id: string) {
-        return this.getOneCategoryService.getOneCategory(id);
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Patch('delete-media/:slug')
+    deleteMedia(@Param('slug') slug: string, @Body() deleteMediaCategoryDto: DeleteMediaCategoryDto ){
+        return this.deleteMediaCategoryService.deleteMedia(slug,deleteMediaCategoryDto)
+    }
+
+    @Get(':slug')
+    getOneCategory(@Param('slug') slug: string) {
+        return this.getOneCategoryService.getOneCategory(slug);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch(':id')
-    updateCatgeory(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-        return this.updateCategoryService.updateCategory(id, updateCategoryDto);
+    @Patch(':slug')
+    updateCatgeory(@Param('slug') slug: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+        return this.updateCategoryService.updateCategory(slug, updateCategoryDto);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Delete(':id')
-    deleteCategory(@Param('id') id: string) {
-        return this.deleteCategoryService.deleteCategory(id);
+    @Delete(':slug')
+    deleteCategory(@Param('slug') slug: string) {
+        return this.deleteCategoryService.deleteCategory(slug);
     }
 }

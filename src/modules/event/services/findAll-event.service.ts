@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Event } from '../entities/event.entity';
-
+import { FindAllEventDto } from '../dto/findAll-event.dto';
+import { Pagination } from 'src/common/pagination/pagination';
+require('dotenv').config()
 @Injectable()
 export class FindAllEventService {
-    async findAll() {
+    async findAll(findAllEventDto:FindAllEventDto) {
         try {
-            const events = await Event.find();
+            const {page,limit} = findAllEventDto
+            const maxPaginationLimit = process.env.MAX_EVENT_PAGINATION_LIMIT
+            const pagination = new Pagination(page,limit,maxPaginationLimit)
+            const events = await Event.find({
+                take: pagination.limit,
+                skip: pagination.skippedItems
+            });
             return events;
         } catch (error) {
             throw error;

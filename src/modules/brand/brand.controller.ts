@@ -1,5 +1,5 @@
 import { DeleteCategoryService } from './../category/services/delete-category.service';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 import { CreateBrandService } from './services/create-brand.service';
@@ -9,7 +9,10 @@ import { GetOneBrandService } from './services/getOne-brand.service';
 import { UpdateBrandService } from './services/update-brand.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { FindAllBrandsDto } from './dto/findAll-brand.dto';
+import { DeleteMediaBrandDto } from './dto/deleteMedia-brand.dto';
+import { DeleteMediaBrandService } from './services/deleteMedia-brand.service';
 
 @ApiTags('brand')
 @Controller('brand')
@@ -20,6 +23,7 @@ export class BrandController {
         private readonly getOneBrandService: GetOneBrandService,
         private readonly updateBrandService: UpdateBrandService,
         private readonly deleteBrandService: DeleteBrandService,
+        private readonly deleteMediaBrandService:DeleteMediaBrandService,
     ) {}
 
     @ApiBearerAuth()
@@ -30,29 +34,39 @@ export class BrandController {
         return this.createBrandService.create(createBrandDto);
     }
 
+    @ApiQuery({name: 'page', required:false, description: 'pagination page'})
+    @ApiQuery({name: 'limit', required:false, description: 'pagination limit'})
     @Get()
-    findAll() {
-        return this.findAllBrandService.findAll();
-    }
-
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.getOneBrandService.getOne(id);
+    findAll(@Query() findAllBrandsDto:FindAllBrandsDto) {
+        return this.findAllBrandService.findAll(findAllBrandsDto);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-        return this.updateBrandService.update(id, updateBrandDto);
+    @Patch('delete-media/:slug')
+    deleteMedia(@Param('slug') slug: string, @Body() deleteMediaBrandDto:DeleteMediaBrandDto ){
+        return this.deleteMediaBrandService.deleteMedia(slug,deleteMediaBrandDto)
+    }
+
+    @Get(':slug')
+    findOne(@Param('slug') slug: string) {
+        return this.getOneBrandService.getOne(slug);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.deleteBrandService.delete(id);
+    @Patch(':slug')
+    update(@Param('slug') slug: string, @Body() updateBrandDto: UpdateBrandDto) {
+        return this.updateBrandService.update(slug, updateBrandDto);
+    }
+
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Delete(':slug')
+    remove(@Param('slug') slug: string) {
+        return this.deleteBrandService.delete(slug);
     }
 }

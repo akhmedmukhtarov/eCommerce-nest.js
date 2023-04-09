@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { CategoryController } from './category.controller';
 import { GetAllCategoriesService } from './services/getAll-category.service';
 import { DeleteCategoryService } from './services/delete-category.service';
+import { DeleteMediaCategoryService } from './services/deleteMedia-category.service';
 
 @Module({
     controllers: [CategoryController],
@@ -14,6 +15,7 @@ import { DeleteCategoryService } from './services/delete-category.service';
         GetOneCategoryService,
         UpdateCategoryService,
         DeleteCategoryService,
+        DeleteMediaCategoryService
     ],
 })
 export class CategoryModule {}

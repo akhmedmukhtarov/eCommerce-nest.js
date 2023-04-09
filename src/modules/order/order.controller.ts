@@ -9,7 +9,7 @@ import { GetOneOrderService } from './services/getOne-order.service';
 import { RefundOrderService } from './services/refund-order.service';
 import { GetAllRefundOrderDto } from './dto/getAllRefundOrder.dto';
 import { GetRefundRequestedOrdersService } from './services/getRefundRequestedOrders.service';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 @ApiTags('order')
 @Controller('order')
 export class OrderController {
@@ -18,19 +18,27 @@ export class OrderController {
         private readonly findAllOrderService: FindAllOrderService,
         private readonly getOneOrderService: GetOneOrderService,
         private readonly refundOrderService: RefundOrderService,
-        private readonly getRefundRequestedOrdersService:GetRefundRequestedOrdersService
+        private readonly getRefundRequestedOrdersService: GetRefundRequestedOrdersService,
     ) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
+    @ApiHeader({ name: 'authozrization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Post()
     create(@Body() createOrderDto: CreateOrderDto, @Req() req: any) {
         return this.createOrderService.create(createOrderDto, req);
     }
 
+    @ApiQuery({ name: 'page', required: false, schema: { type: 'integer' }, description: 'pagination page' })
+    @ApiQuery({ name: 'limit', required: false, schema: { type: 'integer' }, description: 'pagination limit' })
+    @ApiQuery({
+        name: 'status',
+        required: false,
+        schema: { type: 'pending|processing|ontheway|delivered|cancelled' },
+        description: 'status of delivery of order',
+    })
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
+    @ApiHeader({ name: 'authorization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Get()
     findAll(@Query() findAllOrdersDto: FindAllOrdersDto, @Req() req: any) {
@@ -38,22 +46,21 @@ export class OrderController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
+    @ApiHeader({ name: 'authorization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Get('view/:id')
-    findOne(@Req() req: any,@Param('id') id:string) {
-        return this.getOneOrderService.getOne(req,id);
+    findOne(@Req() req: any, @Param('id') id: string) {
+        return this.getOneOrderService.getOne(req, id);
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard,RolesGuard)
+    @ApiHeader({ name: 'authozrization', required: true, description: 'admin or moderators bearer token' })
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete('delete/:id')
     remove(@Param('id') id: string) {}
-    
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'bearer token'})
+    @ApiHeader({ name: 'authozrization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Post('refund')
     refund(@Body('id') id: number, @Req() req: any) {
@@ -61,16 +68,16 @@ export class OrderController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard,RolesGuard)
+    @ApiHeader({ name: 'authozrization', required: true, description: 'admin or moderators bearer token' })
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch('refund')
     refundAdmin(@Body('id') id: number) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authozrization', required: true, description: 'admin or moderators bearer token'})
+    @ApiHeader({ name: 'authozrization', required: true, description: 'admin or moderators bearer token' })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('refund')
-    getRefundRequestedOrders(@Body() getAllRefundOrderDto:GetAllRefundOrderDto){
-        return this.getRefundRequestedOrdersService.getRefundRequestedOrders(getAllRefundOrderDto)
-    }    
+    getRefundRequestedOrders(@Body() getAllRefundOrderDto: GetAllRefundOrderDto) {
+        return this.getRefundRequestedOrdersService.getRefundRequestedOrders(getAllRefundOrderDto);
+    }
 }

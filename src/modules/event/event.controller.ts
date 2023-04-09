@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -8,7 +8,8 @@ import { FindAllEventService } from './services/findAll-event.service';
 import { FindOneEventService } from './services/findOne-event.service';
 import { UpdateEventService } from './services/update-event.service';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { FindAllEventDto } from './dto/findAll-event.dto';
 
 @ApiTags('events')
 @Controller('event')
@@ -29,29 +30,31 @@ export class EventController {
         return this.createEventService.create(createEventDto);
     }
 
+    @ApiQuery({name: 'limit', required: false, description: 'pagination limit'})
+    @ApiQuery({name: 'page', required: false, description: 'pagination page'})
     @Get()
-    findAll() {
-        return this.findAllEventService.findAll();
+    findAll(@Query() findAllEventDto:FindAllEventDto) {
+        return this.findAllEventService.findAll(findAllEventDto);
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.findOneEventService.finOne(id);
-    }
-
-    @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-        return this.updateEventService.update(id, updateEventDto);
+    @Get(':slug')
+    findOne(@Param('slug') slug: string) {
+        return this.findOneEventService.finOne(slug);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.deleteEventService.delete(id);
+    @Patch(':slug')
+    update(@Param('slug') slug: string, @Body() updateEventDto: UpdateEventDto) {
+        return this.updateEventService.update(slug, updateEventDto);
+    }
+
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Delete(':slug')
+    remove(@Param('slug') slug: string) {
+        return this.deleteEventService.delete(slug);
     }
 }

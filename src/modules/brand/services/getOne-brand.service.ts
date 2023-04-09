@@ -3,9 +3,9 @@ import { Brand } from '../entities/brand.entity';
 
 @Injectable()
 export class GetOneBrandService {
-    async getOne(id: string) {
+    async getOne(slug: string) {
         try {
-            const brand = await Brand.findOneBy({ id: +id });
+            const brand = await Brand.findOneBy({slug});
             return brand;
         } catch (err) {
             throw err;

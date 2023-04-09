@@ -4,9 +4,9 @@ import { Event } from '../entities/event.entity';
 
 @Injectable()
 export class UpdateEventService {
-    async update(id: string, updateEventDto: UpdateEventDto) {
+    async update(slug: string, updateEventDto: UpdateEventDto) {
         try {
-            const result = await Event.update(+id, updateEventDto);
+            const result = await Event.update({slug}, updateEventDto);
             return result;
         } catch (error) {
             throw error;

@@ -5,9 +5,9 @@ import { Attribute } from '../entities/attribute.entity';
 
 @Injectable()
 export class UpdateAttributeService {
-    async update(id: string, updateAttributeDto: UpdateAttributeDto) {
+    async update(slug: string, updateAttributeDto: UpdateAttributeDto) {
         try {
-            const result = await Attribute.update(+id, updateAttributeDto);
+            const result = await Attribute.update({slug}, updateAttributeDto);
             return result;
         } catch (err) {
             throw err;

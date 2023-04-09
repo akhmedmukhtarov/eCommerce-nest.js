@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CreateAttributeValueDto } from './dto/create-attribute-value.dto';
 import { UpdateAttributeValueDto } from './dto/update-attribute-value.dto';
 import { CreateAttributeValueService } from './services/create-attribute-value.service';
-import { FindAllAttributeValueService } from './services/findAll-attribute-valuve.service';
+import { FindAllAttributeValueService } from './services/findAll-attribute-value.service';
 import { GetOneAttributeValueService } from './services/getOne-attribute-value.service';
 import { UpdateAttributeValueService } from './services/update-attribute-value.service';
 import { DeleteAttributeVAlueService } from './services/delete-attribute-value.service';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { FindAllAttributeValuesDto } from './dto/findAll-attributeValues.dto';
 
 @ApiTags('attribute-value')
 @Controller('attribute-value')
@@ -29,29 +30,32 @@ export class AttributeValueController {
         return this.createAttributeValueService.create(createAttributeValueDto);
     }
     
+    @ApiQuery({name: 'page', required:false,schema:{type: 'integer'}, description: 'pagination page'})
+    @ApiQuery({name: 'limit', required:false, schema: {type: 'integer'},description: 'pagination limit'})
+    @ApiQuery({name: 'attr', required:false, schema: {type: 'attribute slug'},description: 'find all values of attribute by attribute slug'})
     @Get()
-    findAll() {
-        return this.findAllAttributeValueService.findAll();
+    findAll(@Query() findAllAttributeValuesDto:FindAllAttributeValuesDto) {
+        return this.findAllAttributeValueService.findAll(findAllAttributeValuesDto);
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.getOneAttributeValueService.getOne(id);
-    }
-
-    @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateAttributeValueDto: UpdateAttributeValueDto) {
-        return this.updateAttributeValueService.update(id, updateAttributeValueDto);
+    @Get(':slug')
+    findOne(@Param('slug') slug: string) {
+        return this.getOneAttributeValueService.getOne(slug);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.deleteAttributeVAlueService.delete(id);
+    @Patch(':slug')
+    update(@Param('slug') slug: string, @Body() updateAttributeValueDto: UpdateAttributeValueDto) {
+        return this.updateAttributeValueService.update(slug, updateAttributeValueDto);
+    }
+
+    @ApiBearerAuth()
+    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Delete(':slug')
+    remove(@Param('slug') slug: string) {
+        return this.deleteAttributeVAlueService.delete(slug);
     }
 }

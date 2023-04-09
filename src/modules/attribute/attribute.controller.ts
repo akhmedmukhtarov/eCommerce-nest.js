@@ -9,7 +9,7 @@ import { UpdateAttributeService } from './services/update-attribute.service';
 import { DeleteAttributeService } from './services/delete-attribute.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('attribute')
 @Controller('attribute')
@@ -30,29 +30,32 @@ export class AttributeController {
         return this.createAttributeService.create(createAttributeDto);
     }
 
+    @ApiQuery({name: 'page', required:false,schema:{type: 'integer'}, description: 'pagination page'})
+    @ApiQuery({name: 'limit', required:false, schema: {type: 'integer'},description: 'pagination limit'})
+    @ApiQuery({name: 'categ', required:false, schema: {type: 'category slug'},description: 'find all attributes of category by category slug'})
     @Get()
-    findAll(@Body() findAllAttirbuteDto: FindAllAttirbuteDto) {
+    findAll(@Query() findAllAttirbuteDto: FindAllAttirbuteDto) {
         return this.getAllAttributeService.findAll(findAllAttirbuteDto);
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.findOneAttributeService.findOne(id);
+    @Get(':slug')
+    findOne(@Param('slug') slug: string) {
+        return this.findOneAttributeService.findOne(slug);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateAttributeDto: UpdateAttributeDto) {
-        return this.updateAttributeService.update(id, updateAttributeDto);
+    @Patch(':slug')
+    update(@Param('slug') slug: string, @Body() updateAttributeDto: UpdateAttributeDto) {
+        return this.updateAttributeService.update(slug, updateAttributeDto);
     }
 
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.deleteAttributeService.delete(id);
+    @Delete(':slug')
+    remove(@Param('slug') slug: string) {
+        return this.deleteAttributeService.delete(slug);
     }
 }

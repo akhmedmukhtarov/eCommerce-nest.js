@@ -5,6 +5,9 @@ import { DeleteProductService } from './services/delete-product.service';
 import { FindAllProductService } from './services/findAll-product.service';
 import { FindOneProductservice } from './services/findOne-product.service';
 import { UpdateProductService } from './services/update-product.service';
+import { DeleteMediaProductService } from './services/deleteMedia-product.service';
+import { SearchProductService } from './services/search-product.service';
+
 
 @Module({
     controllers: [ProductController],
@@ -14,6 +17,8 @@ import { UpdateProductService } from './services/update-product.service';
         FindOneProductservice,
         UpdateProductService,
         DeleteProductService,
+        DeleteMediaProductService,
+        SearchProductService
     ],
 })
 export class ProductModule {}
