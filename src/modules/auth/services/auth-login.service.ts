@@ -14,7 +14,7 @@ export class LoginService {
             const { phone } = phoneNumber;
             const otp = Math.floor(Math.random() * 1000000);
             const config = new SmsSenderConfig(phone, otp);
-            // axios.post(process.env.SMS_SENDER_URL, config);
+            axios.post(process.env.SMS_SENDER_URL, config);
             User.upsert(
                 [{ phone: phone, verificationCode: otp }],
                 ['verificationCode'],
