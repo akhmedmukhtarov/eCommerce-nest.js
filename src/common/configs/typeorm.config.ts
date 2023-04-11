@@ -16,8 +16,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'mysql',
     host: 'localhost',
     port: 8889,
-    username: process.env.DATABASE_USERNAME,
-    password: process.env.DATABASE_PASSWORD,
+    username: 'root',
+    password: 'root',
     database: 'sdb-nest',
     entities: [
         User,
