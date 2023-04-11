@@ -14,9 +14,6 @@ export class LoginService {
     async login(phoneNumber: RegisterDto) {
         try {
             const { phone } = phoneNumber;
-            console.log(phone);
-            console.log(process.env.SMS_SENDER_URL);
-            
             const otp = Math.floor(Math.random() * 1000000);
             const config = new SmsSenderConfig(phone, otp);
             // await sendSms(phone,otp)
