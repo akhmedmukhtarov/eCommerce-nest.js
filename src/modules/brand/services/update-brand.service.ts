@@ -9,14 +9,23 @@ export class UpdateBrandService {
         try {
             let {nameUz,nameRu,images,status,isFeatured, categoryId} = updateBrandDto
             categoryId = await categoryId
-
+            
             const categories = []
-            for(const id of categoryId){
-                const category = await Category.findOneBy({id})
-                categories.push(category)
+            if(categoryId){
+                for(const id of categoryId){
+                    const category = await Category.findOneBy({id})
+                    categories.push(category)
+                }        
             }
-            const result = await Brand.update({slug},{nameUz,nameRu,images,status,isFeatured,categories});
-            return result;
+            const brand = await Brand.findOneBy({slug});
+            brand.nameUz = nameUz ? nameUz : brand.nameUz
+            brand.nameRu = nameRu ? nameRu : brand.nameRu
+            brand.images = images ? images : brand.images
+            brand.status = status ? status : brand.status
+            brand.isFeatured = isFeatured ? isFeatured : brand.isFeatured
+            brand.categories = categories ? categories : brand.categories
+            return await brand.save();
+
         } catch (err) {
             throw err;
         }
