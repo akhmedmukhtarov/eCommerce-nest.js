@@ -43,12 +43,12 @@ export class AuthController {
         return this.refreshTokenService.refresh(token);
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiQuery({name: 'page', required: false, schema: {type: 'integer'}})
     @ApiQuery({name: 'limit', required: false, schema: {type: 'integer'}})
     @ApiQuery({name: 'search', required: false, schema: {type: 'phone number of user'}})
     @ApiBearerAuth()
     @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     findAllUsers(@Query() findAllUserDto: FindAllUserDto) {
         return this.findAllUserService.findAllUser(findAllUserDto);

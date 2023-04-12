@@ -17,7 +17,7 @@ export class Category extends BaseEntity{
     @Column({default:null})
     images: string
 
-    @Column()
+    @Column({default:null})
     slug: string
 
     @Column({default: 0})

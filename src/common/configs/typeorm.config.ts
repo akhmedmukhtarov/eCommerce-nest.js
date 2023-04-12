@@ -14,11 +14,11 @@ require('dotenv').config();
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'mysql',
-    host: 'localhost',
-    port: 8889,
-    username: 'root',
-    password: 'root',
-    database: 'sdb-nest',
+    host: process.env.DB_HOST,
+    port: 3306,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
     entities: [
         User,
         Admin,
@@ -33,3 +33,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     ],
     synchronize: true,
 };
+
+

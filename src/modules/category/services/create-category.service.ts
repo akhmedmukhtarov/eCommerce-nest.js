@@ -12,7 +12,7 @@ export class CreateCategoryService {
 
             const slug = slugify(nameUz);
 
-            let category = Category.create({ nameUz, nameRu, parentId: await parentId, position, isFeatured, status, images });
+            let category = Category.create({ nameUz, nameRu, parentId: await parentId, position, isFeatured, status, images});
             category = await category.save();
 
             const result = await Category.update({ id: +category.id }, { slug: slug + category.id });
