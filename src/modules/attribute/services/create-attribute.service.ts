@@ -4,23 +4,32 @@ import { Injectable } from '@nestjs/common';
 import { Attribute } from '../entities/attribute.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 import { slugify } from 'src/common/helpers/slugify';
+import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 const crypto = require('crypto');
 
 @Injectable()
 export class CreateAttributeService {
     async create(createAttributeDto: CreateAttributeDto) {
         try {
-            let { nameRu, nameUz, isFilterable, categoryId} = createAttributeDto;
-            categoryId = await categoryId
-
+            let { nameRu, nameUz, isFilterable, arrayOfCategoryId, arrayOfAttributeValueId}: any = createAttributeDto;
+            arrayOfCategoryId = await arrayOfCategoryId
+            arrayOfAttributeValueId = await arrayOfAttributeValueId
             const slug = slugify(nameUz)
             
             const categories = []
-            if(categoryId.length > 0){
-                for(const id of categoryId){
+            if(arrayOfCategoryId.length > 0){
+                for(const id of arrayOfCategoryId){
                 const category = await Category.findOneBy({id: +id})
-                categories.push({category})
+                categories.push(category)
+                }
             }
+
+            const attributeValues = []
+            if(arrayOfAttributeValueId){
+                for(const id of arrayOfAttributeValueId){
+                    const attributeValue = await AttributeValue.findOneBy({id})
+                    attributeValues.push(attributeValue)
+                }
             }
 
             let attribute = Attribute.create({
@@ -28,10 +37,11 @@ export class CreateAttributeService {
                 nameUz,
                 categories,
                 isFilterable,
+                values: attributeValues
             });
             attribute = await attribute.save();
-
-            const result =  await Attribute.update({id: +attribute.id},{slug: slug + attribute.id})
+            attribute.slug = slug+attribute.id
+            return await attribute.save()
         } catch (err) {
             throw err;
         }

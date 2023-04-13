@@ -22,9 +22,8 @@ export class AttributeController {
         private readonly deleteAttributeService: DeleteAttributeService,
     ) {}
 
-    @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard, RolesGuard)
+    // @ApiBearerAuth()
+    // @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createAttributeDto: CreateAttributeDto) {
         return this.createAttributeService.create(createAttributeDto);
@@ -43,8 +42,8 @@ export class AttributeController {
         return this.findOneAttributeService.findOne(slug);
     }
 
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
+    // @ApiBearerAuth()
+    // @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':slug')
     update(@Param('slug') slug: string, @Body() updateAttributeDto: UpdateAttributeDto) {
         return this.updateAttributeService.update(slug, updateAttributeDto);

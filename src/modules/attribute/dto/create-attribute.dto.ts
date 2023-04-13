@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDefined, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsDefined, IsInt, IsNotEmpty, IsOptional, IsString, ValidatePromise } from 'class-validator';
+import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 
 export class CreateAttributeDto {
@@ -23,6 +24,10 @@ export class CreateAttributeDto {
     isFilterable?: boolean;
 
     @IsNotEmpty()
+    @IsOptional()
+    @IsArray()
+    @IsInt({each: true})
+    @ValidatePromise()
     @Transform(async ({ value }) => {
         try {
             for (const id of value) {
@@ -36,5 +41,25 @@ export class CreateAttributeDto {
             throw error;
         }
     })
-    categoryId: number[];
+    arrayOfCategoryId: Promise<number[]>
+
+    @IsNotEmpty()
+    @IsOptional()
+    @IsArray()
+    @IsInt({each: true})
+    @ValidatePromise()
+    @Transform(async ({ value }) => {
+        try {
+            for (const id of value) {
+                const attributeValue = await AttributeValue.findOneBy({ id: +id });
+                if (!attributeValue) {
+                    throw new HttpException(`Attribute value with id: ${id} not found`, HttpStatus.NOT_FOUND);
+                }
+            }
+            return value;
+        } catch (error) {
+            throw error;
+        }
+    })
+    arrayOfAttributeValueId: Promise<number[]>
 }
