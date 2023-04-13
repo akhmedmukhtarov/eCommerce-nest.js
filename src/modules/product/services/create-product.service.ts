@@ -23,27 +23,24 @@ export class CreateProductService {
                 isPopular,
                 price,
                 discount,
-                categoryId,
                 status,
                 images,
-                attributeValueId,
-                brandId,
             } = createProductDto;
 
-            categoryId = await categoryId;
-            attributeValueId = await attributeValueId;
-            brandId = await brandId;
+            const arrayOfCategoryId = await createProductDto.arrayOfCategoryId;
+            const arrayOfattributeValueId = await createProductDto.arrayOfattributeValueId;
+            const brandId = await createProductDto.brandId;
 
             const slug = slugify(nameUz);
 
             const categories = [];
-            for (const id of categoryId) {
+            for (const id of arrayOfCategoryId) {
                 const category = await Category.findOneByOrFail({ id });
                 categories.push(category);
             }
 
             const attributeValues = [];
-            for (const attrValueId of attributeValueId) {
+            for (const attrValueId of arrayOfattributeValueId) {
                 const attributeValue = await AttributeValue.findOneByOrFail({ id: attrValueId });
                 attributeValues.push(attributeValue);
             }
@@ -69,8 +66,8 @@ export class CreateProductService {
                 brand,
             });
             product = await product.save();
-
-            const result = await Product.update({ id: product.id }, { slug: slug + product.id });
+            product.slug = slug + product.id;
+            return await product.save();
         } catch (err) {
             throw err;
         }

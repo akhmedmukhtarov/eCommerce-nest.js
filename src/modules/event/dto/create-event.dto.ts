@@ -15,7 +15,7 @@ export class CreateEventDto {
     @IsString()
     titleRu: string
 
-    @ApiProperty()
+    @ApiProperty({type: 'String of one or more pictures, divided by comma', example: 'url,url1,url2'})
     @IsDefined()
     @IsNotEmpty()
     @IsString()

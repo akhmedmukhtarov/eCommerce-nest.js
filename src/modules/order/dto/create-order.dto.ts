@@ -1,37 +1,65 @@
-import { Transform } from 'class-transformer';
-import { IsArray, IsDate, IsDefined, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import {
+    IsArray,
+    IsDate,
+    IsDefined,
+    IsIn,
+    IsInt,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    Min,
+    ValidateNested,
+    ValidatePromise,
+} from 'class-validator';
 
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-type ProductIdAndQty = {
-    productId: number;
-    qty: number;
-};
-export class CreateOrderDto {
-    @ApiProperty()
-    @IsDefined()
-    @IsArray()
+class ProductIdAndQty {
+    @ApiProperty({type: "number", example: 0})
+    @IsNotEmpty()
+    @IsInt()
+    @ValidatePromise()
     @Transform(async ({ value }) => {
-        for (const obj of value) {
-            const product = await Product.findOneBy({ id: obj.productId });
+        try {
+            const product = await Product.findOneBy({ id: +value });
             if (!product) {
-                throw new HttpException(`Product with id: ${obj.productId} not found`, HttpStatus.NOT_FOUND);
+                throw new HttpException(`Product with id: ${+value} not found`, HttpStatus.NOT_FOUND);
             }
+            return value;
+        } catch (error) {
+            throw error;
         }
-        return value;
     })
-    productIdAndQty: ProductIdAndQty[];
+    productId: Promise<number>;
 
     @ApiProperty()
+    @IsNotEmpty()
+    @IsInt()
+    @Min(0)
+    qty: number;
+}
+
+export class CreateOrderDto {
+    @ApiProperty({type: [ProductIdAndQty]})
+    @IsNotEmpty()
+    @IsDefined()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => ProductIdAndQty)
+    productIdAndQty: ProductIdAndQty[];
+
+    @ApiProperty({example: 'unpaid|paid'})
     @IsDefined()
     @IsNotEmpty()
     @IsString()
     @IsIn(['unpaid', 'paid'])
     paymentStatus: 'unpaid' | 'paid';
 
-    @ApiProperty()
+    @ApiProperty({example: "'cod' | 'click' | 'payme' | 'apelsin'"})
     @IsDefined()
     @IsString()
     @IsIn(['cod', 'click', 'payme', 'apelsin'])
@@ -44,7 +72,7 @@ export class CreateOrderDto {
     @IsString()
     note?: string;
 
-    @ApiProperty()
+    @ApiProperty({example: "'pending' | 'processing' | 'ontheway' | 'delivered' | 'cancelled'"})
     @IsOptional()
     @IsString()
     @IsIn(['pending', 'processing', 'ontheway', 'delivered', 'cancelled'])

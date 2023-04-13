@@ -23,7 +23,6 @@ export class EventController {
     ) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createEventDto: CreateEventDto) {
@@ -43,7 +42,6 @@ export class EventController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':slug')
     update(@Param('slug') slug: string, @Body() updateEventDto: UpdateEventDto) {
@@ -51,7 +49,6 @@ export class EventController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':slug')
     remove(@Param('slug') slug: string) {

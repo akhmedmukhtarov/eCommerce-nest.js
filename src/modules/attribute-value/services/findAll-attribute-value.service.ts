@@ -15,6 +15,8 @@ export class FindAllAttributeValueService {
             const attributeValuePagination = new Pagination(page,limit,maxAttributeValuePagination)
 
             const attributeValues = await AttributeValue.find({
+                relations: ['attribue', 'products'],
+                loadEagerRelations: true,
                 where:{
                     attribute:{
                         slug: attr

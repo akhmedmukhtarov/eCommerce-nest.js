@@ -27,7 +27,6 @@ export class BrandController {
     ) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     create(@Body() createBrandDto: CreateBrandDto) {
@@ -42,7 +41,6 @@ export class BrandController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch('delete-media/:slug')
     deleteMedia(@Param('slug') slug: string, @Body() deleteMediaBrandDto:DeleteMediaBrandDto ){
@@ -55,7 +53,6 @@ export class BrandController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':slug')
     update(@Param('slug') slug: string, @Body() updateBrandDto: UpdateBrandDto) {
@@ -63,7 +60,6 @@ export class BrandController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':slug')
     remove(@Param('slug') slug: string) {

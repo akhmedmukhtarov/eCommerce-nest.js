@@ -32,7 +32,6 @@ export class AdminCategories {
 
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('admin')
     @Post('setmoderator')
@@ -46,7 +45,6 @@ export class AdminCategories {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('admin')
     @Delete('delete')
@@ -55,7 +53,6 @@ export class AdminCategories {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Patch('logout')
     logout(@Req() req:any){

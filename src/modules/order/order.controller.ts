@@ -22,7 +22,6 @@ export class OrderController {
     ) {}
 
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authozrization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Post()
     create(@Body() createOrderDto: CreateOrderDto, @Req() req: any) {
@@ -38,7 +37,6 @@ export class OrderController {
         description: 'status of delivery of order',
     })
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authorization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Get()
     findAll(@Query() findAllOrdersDto: FindAllOrdersDto, @Req() req: any) {
@@ -46,7 +44,6 @@ export class OrderController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authorization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Get('view/:id')
     findOne(@Req() req: any, @Param('id') id: string) {
@@ -54,13 +51,11 @@ export class OrderController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authozrization', required: true, description: 'admin or moderators bearer token' })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete('delete/:id')
     remove(@Param('id') id: string) {}
 
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authozrization', required: true, description: 'bearer token' })
     @UseGuards(JwtAuthGuard)
     @Post('refund')
     refund(@Body('id') id: number, @Req() req: any) {
@@ -68,13 +63,11 @@ export class OrderController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authozrization', required: true, description: 'admin or moderators bearer token' })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch('refund')
     refundAdmin(@Body('id') id: number) {}
 
     @ApiBearerAuth()
-    @ApiHeader({ name: 'authozrization', required: true, description: 'admin or moderators bearer token' })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('refund')
     getRefundRequestedOrders(@Body() getAllRefundOrderDto: GetAllRefundOrderDto) {

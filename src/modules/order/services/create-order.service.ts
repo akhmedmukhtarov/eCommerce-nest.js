@@ -10,14 +10,14 @@ export class CreateOrderService {
     async create(createOrderDto: CreateOrderDto, req: any) {
         try {
             let { productIdAndQty, deliveryAddress, deliveryPhone, paymentStatus, paymentMethod, note, status, deliveryPrice } = createOrderDto;
-            paymentStatus = await paymentStatus
+            
 
             const user = await User.findOneByOrFail({ id: +req.id });
             const orders = [];
             let totalPrice = deliveryPrice ? deliveryPrice : 0;
             for (const productInfo of productIdAndQty) {
                 const product = await Product.findOneByOrFail({
-                    id: productInfo.productId,
+                    id: await productInfo.productId,
                 });
                 Product.update({id: product.id},{orderCount: product.orderCount+1})
                 const qty = productInfo.qty ? productInfo.qty : 1;

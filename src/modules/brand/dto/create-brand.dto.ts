@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from "@nestjs/common"
 import { ApiProperty } from "@nestjs/swagger"
 import { Transform } from "class-transformer"
-import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsArray, IsBoolean, IsDefined, IsInt, IsNotEmpty, IsOptional, IsString, ValidatePromise } from "class-validator"
 import { Category } from "src/modules/category/entities/category.entity"
 
 export class CreateBrandDto {
@@ -17,7 +17,7 @@ export class CreateBrandDto {
     @IsString()
     nameRu:string
 
-    @ApiProperty()
+    @ApiProperty({type: 'string of one or more url of picture didided by comma', example: 'url,url1'})
     @IsDefined()
     @IsNotEmpty()
     @IsString()
@@ -34,8 +34,11 @@ export class CreateBrandDto {
     status?: boolean
 
 
-    @ApiProperty()
+    @ApiProperty({type: 'array of category id', example: [1,2]})
     @IsOptional()
+    @IsArray()
+    @IsInt({each: true})
+    @ValidatePromise()
     @IsDefined()
     @IsNotEmpty()
     @Transform(async ({value})=> {
@@ -47,6 +50,6 @@ export class CreateBrandDto {
         }
         return value
     })
-    categoryId: number[]
+    arrayOfCategoryId: Promise<number[]>
 
 }

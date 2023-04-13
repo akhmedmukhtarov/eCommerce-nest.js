@@ -9,13 +9,12 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger';
 @ApiTags('media upload/delete')
-// @UseGuards(JwtAuthGuard,RolesGuard)
+@UseGuards(JwtAuthGuard,RolesGuard)
 @Controller('media')
 export class MediaController {
     constructor(private uploadMediaService: UploadMediaService, private deleteMediaService: DeleteMediaService) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseInterceptors(
         FilesInterceptor(
             'images',
@@ -32,7 +31,6 @@ export class MediaController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @Delete('delete')
     delete(@Body() deleteMediaDto: DeleteMediaDto) {
         return this.deleteMediaService.delete(deleteMediaDto);

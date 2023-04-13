@@ -19,6 +19,7 @@ export class FindAllAttributeValuesDto{
 
     @IsOptional()
     @IsNotEmpty()
+    @IsString()
     @IsDefined()
     @Transform(async ({value})=> {
         const attribute = await Attribute.findOneBy({slug: value})
@@ -27,5 +28,5 @@ export class FindAllAttributeValuesDto{
         }
         return value
     })
-    attr?: string
+    attr?: Promise<string>
 }

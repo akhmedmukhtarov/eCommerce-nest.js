@@ -8,16 +8,17 @@ import { slugify } from 'src/common/helpers/slugify';
 export class CreateBrandService {
     async create(createBrandDto: CreateBrandDto) {
         try {
-            let { nameRu, nameUz, images, isFeatured, status, categoryId } = createBrandDto;
-
-            categoryId = await categoryId;
+            let { nameRu, nameUz, images, isFeatured, status } = createBrandDto;
+            const arrayOfCategoryId = await createBrandDto.arrayOfCategoryId
 
             const slug = slugify(nameUz);
 
             const categories = [];
-            for (const id of categoryId) {
-                const category = await Category.findOneBy({ id });
-                categories.push(category);
+            if(arrayOfCategoryId){
+                for (const id of arrayOfCategoryId) {
+                    const category = await Category.findOneBy({ id });
+                    categories.push(category);
+                }
             }
 
             let brand = Brand.create({
@@ -29,8 +30,8 @@ export class CreateBrandService {
                 categories,
             });
             brand = await brand.save();
-
-            const result = await Brand.update({ id: +brand.id }, { slug: slug + brand.id });
+            brand.slug = slug+brand.id
+            return await brand.save()
         } catch (err) {
             throw err;
         }

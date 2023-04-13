@@ -7,10 +7,10 @@ require('dotenv').config()
 
 @Injectable()
 export class GetAllAttributeService {
-    async findAll(findAllAttirbuteDto: FindAllAttirbuteDto) {
+    async findAll(findAllAttirbuteDto: FindAllAttirbuteDto): Promise<Attribute[]> {
         try {
-            let {categ,page,limit}: any = findAllAttirbuteDto;
-            categ = await categ
+            const {page,limit} = findAllAttirbuteDto;
+            const categ = await findAllAttirbuteDto.categ
             const maxPaginationLimit = process.env.MAX_ATTRIBUTE_PAGINATION_LIMIT
             const attributePagination = new Pagination(page,limit,maxPaginationLimit)
 
@@ -21,6 +21,8 @@ export class GetAllAttributeService {
                 }
             }
             const attributes = await Attribute.find({
+                relations: ['values', 'categories'],
+                loadEagerRelations: true,
                 where: {
                     categories,
                 },

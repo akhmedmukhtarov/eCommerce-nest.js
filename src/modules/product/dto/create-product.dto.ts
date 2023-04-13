@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidatePromise } from 'class-validator';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 import { Brand } from 'src/modules/brand/entities/brand.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
@@ -44,11 +44,6 @@ export class CreateProductDto {
     descriptionRu?: string;
 
     @ApiProperty()
-    @IsOptional()
-    @IsInt()
-    quantity?: number;
-
-    @ApiProperty()
     @IsNumber()
     price: number;
 
@@ -72,18 +67,26 @@ export class CreateProductDto {
     @IsNumber()
     discount?: number;
 
-    @ApiProperty()
+    @ApiProperty({isArray:true, example: [1,2]})
+    @IsArray()
+    @IsInt({ each: true })
     @IsNotEmpty()
+    @ValidatePromise()
+    @IsDefined()
     @Transform(async ({ value }) => {
-        for (const categoryId of value) {
-            const category = await Category.findOneBy({ id: +categoryId });
-            if(!category){
-                throw new HttpException(`Category with Id: ${categoryId} not found`, HttpStatus.NOT_FOUND)
+        try {
+            for (const categoryId of value) {
+                const category = await Category.findOneBy({ id: +categoryId });
+                if (!category) {
+                    throw new HttpException(`Category with Id: ${categoryId} not found`, HttpStatus.NOT_FOUND);
+                }
             }
+            return value;
+        } catch (error) {
+            throw error;
         }
-        return value
     })
-    categoryId: number[];
+    arrayOfCategoryId: Promise<number[]>;
 
     @ApiProperty()
     @IsOptional()
@@ -96,27 +99,40 @@ export class CreateProductDto {
     @IsString()
     images: string;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @Transform(async ({value}) => {
-        for(const attributeValueId of value){
-            const attributeValue = await AttributeValue.findOneBy({id: +attributeValueId})
-            if(!attributeValue){
-                throw new HttpException(`Attribute value with id: ${attributeValueId} not found`, HttpStatus.NOT_FOUND)
+    @ApiProperty({isArray:true, example: [1,2]})
+    @IsArray()
+    @IsInt({ each: true })
+    @IsOptional()
+    @ValidatePromise()
+    @Transform(async ({ value }) => {
+        try {
+            for (const attributeValueId of value) {
+                const attributeValue = await AttributeValue.findOneBy({ id: +attributeValueId });
+                if (!attributeValue) {
+                    throw new HttpException(`Attribute value with id: ${attributeValueId} not found`, HttpStatus.NOT_FOUND);
+                }
             }
-        } 
-        return value
-    })
-    attributeValueId?: number[];
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @Transform(async ({value}) => {
-        const brand = await Brand.findOneBy({id: +value})
-        if(!brand){
-            throw new HttpException(`Brand with id: ${value} not found`, HttpStatus.NOT_FOUND)
+            return value;
+        } catch (error) {
+            throw error;
         }
-        return value
     })
-    brandId: number;
+    arrayOfattributeValueId?: Promise<number[]>;
+
+    @ApiProperty({type: 'number', required: false})
+    @IsOptional()
+    @IsInt()
+    @ValidatePromise()
+    @Transform(async ({ value }) => {
+        try {
+            const brand = await Brand.findOneBy({ id: +value });
+            if (!brand) {
+                throw new HttpException(`Brand with id: ${value} not found`, HttpStatus.NOT_FOUND);
+            }
+            return value;
+        } catch (error) {
+            throw error;
+        }
+    })
+    brandId?: Promise<number>
 }

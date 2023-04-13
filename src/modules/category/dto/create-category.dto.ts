@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, isInt, validate } from 'class-validator';
+import { IsArray, IsBoolean, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidatePromise, isDefined, isInt, isNotEmpty, validate } from 'class-validator';
 import { Category } from '../entities/category.entity';
 import { ApiProperty } from '@nestjs/swagger';
-const dataSource = require('mysql2')
+import { Product } from 'src/modules/product/entities/product.entity';
+import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
+import { Brand } from 'src/modules/brand/entities/brand.entity';
 
 export class CreateCategoryDto {
     @ApiProperty()
@@ -18,7 +20,9 @@ export class CreateCategoryDto {
     @IsNotEmpty()
     nameRu: string;
 
-    @ApiProperty()
+    @ApiProperty({type: 'Parent id of category', example: 0})
+    @IsInt()
+    @ValidatePromise()
     @IsOptional()
     @Transform(async ({value}): Promise<number> =>{
         if(value !== 0){
@@ -31,7 +35,7 @@ export class CreateCategoryDto {
         return value
         
     })
-    parentId?: number
+    parentId?: Promise<number>
 
 
     @ApiProperty()
@@ -54,4 +58,58 @@ export class CreateCategoryDto {
     @IsDefined()
     @IsNotEmpty()
     images: string;
+
+    @ApiProperty({type: 'Array of product id', example: [1,2]})
+    @IsOptional()
+    @IsArray()
+    @IsInt({each: true})
+    @IsDefined()
+    @IsNotEmpty()
+    @ValidatePromise()
+    @Transform(async ({value})=>{
+        for(const id of value){
+            const product = await Product.findOneBy({id})
+            if(!product){
+                throw new NotFoundException(`Product with id: ${id} not found`)
+            }
+        }
+        return value
+    })
+    arrayOfProductId: Promise<number[]>
+
+    @ApiProperty({type: 'Array of attribute id', example: [1,2]})
+    @IsOptional()
+    @IsArray()
+    @IsInt({each: true})
+    @IsDefined()
+    @IsNotEmpty()
+    @ValidatePromise()
+    @Transform(async ({value})=>{
+        for(const id of value){
+            const attribute = await Attribute.findOneBy({id})
+            if(!attribute){
+                throw new NotFoundException(`Product with id: ${id} not found`)
+            }
+        }
+        return value
+    })
+    arrayOfAttributeId: Promise<number[]>
+
+    @ApiProperty({type: 'Array of brand id', example: [1,2]})
+    @IsOptional()
+    @IsArray()
+    @IsInt({each: true})
+    @IsDefined()
+    @IsNotEmpty()
+    @ValidatePromise()
+    @Transform(async ({value})=>{
+        for(const id of value){
+            const brand = await Brand.findOneBy({id})
+            if(!brand){
+                throw new NotFoundException(`Product with id: ${id} not found`)
+            }
+        }
+        return value
+    })
+    arrayOfBrandId: Promise<number[]>
 }

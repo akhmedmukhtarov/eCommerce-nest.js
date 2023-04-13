@@ -65,9 +65,6 @@ export class Product extends BaseEntity {
     @JoinTable()
     categories: Category[];
 
-    // @ManyToMany(() => Attribute, (attr: Attribute) => attr.products)
-    // @JoinTable()
-    // attributes: Attribute[];
 
     @ManyToMany((() => AttributeValue), (attrValue: AttributeValue) => attrValue.products)
     @JoinTable()

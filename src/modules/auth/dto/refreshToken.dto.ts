@@ -1,10 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDefined, IsNotEmpty, IsString } from "class-validator";
+import { IsDefined, IsJWT, IsNotEmpty, IsString } from "class-validator";
 
 export class RefreshTokenDto {
 
     @ApiProperty()
     @IsDefined()
+    @IsJWT()
     @IsNotEmpty()
     @IsString()
     refreshToken: string

@@ -3,7 +3,7 @@ import { IsArray, IsDefined, IsNotEmpty, IsString } from "class-validator";
 
 export class DeleteMediaDto{
 
-    @ApiProperty()
+    @ApiProperty({type: 'Array of url of the picture/s', example: ['url']})
     @IsDefined()
     @IsNotEmpty()
     @IsArray()

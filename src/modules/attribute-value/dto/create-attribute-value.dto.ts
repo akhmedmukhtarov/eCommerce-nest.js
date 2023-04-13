@@ -18,7 +18,7 @@ export class CreateAttributeValueDto {
     @IsString()
     nameRu: string;
 
-    @ApiProperty()
+    @ApiProperty({type: 'number', example:0})
     @IsInt()
     @ValidatePromise()
     @IsNotEmpty()
@@ -35,7 +35,7 @@ export class CreateAttributeValueDto {
     })
     attributeId: Promise<number>;
 
-    @ApiProperty()
+    @ApiProperty({type:'array of product id', example: [1,2]})
     @ValidatePromise()
     @IsArray()
     @IsInt({ each: true })

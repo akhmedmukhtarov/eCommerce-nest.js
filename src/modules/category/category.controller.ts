@@ -28,7 +28,6 @@ export class CategoryController {
     ) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     async create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -43,7 +42,6 @@ export class CategoryController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required:true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch('delete-media/:slug')
     deleteMedia(@Param('slug') slug: string, @Body() deleteMediaCategoryDto: DeleteMediaCategoryDto ){
@@ -55,16 +53,14 @@ export class CategoryController {
         return this.getOneCategoryService.getOneCategory(slug);
     }
 
-    // @ApiBearerAuth()
-    // @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
-    // @UseGuards(JwtAuthGuard, RolesGuard)
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':slug')
     updateCatgeory(@Param('slug') slug: string, @Body() updateCategoryDto: UpdateCategoryDto) {
         return this.updateCategoryService.updateCategory(slug, updateCategoryDto);
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':slug')
     deleteCategory(@Param('slug') slug: string) {

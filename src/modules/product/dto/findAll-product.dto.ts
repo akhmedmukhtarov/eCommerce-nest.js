@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDefined, IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsIn, IsNotEmpty, IsOptional, IsString, ValidatePromise } from 'class-validator';
 import { AttributeValue } from 'src/modules/attribute-value/entities/attribute-value.entity';
 import { Brand } from 'src/modules/brand/entities/brand.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
@@ -20,6 +20,8 @@ export class FindAllProductDto {
 
     @ApiProperty()
     @IsOptional()
+    @IsString()
+    @ValidatePromise()
     @Transform(async ({value}) => {
         const attrValueSlugs = value.split(',')
         for(const attrValueSlug of attrValueSlugs){
@@ -30,10 +32,12 @@ export class FindAllProductDto {
         }
         return value
     })
-    attr?: string;
+    attr?: Promise<string>
 
     @ApiProperty()
     @IsOptional()
+    @IsString()
+    @ValidatePromise()
     @Transform(async ({ value }) => {
         const category = await Category.findOneBy({slug: value });
         if (!category) {
@@ -41,9 +45,11 @@ export class FindAllProductDto {
         }
         return value;
     })
-    category?: string;
+    category?: Promise<string>
 
     @ApiProperty()
+    @IsString()
+    @ValidatePromise()
     @IsOptional()
     @Transform(async ({ value }) => {
         const brand = await Brand.findOneBy({ slug: value });
@@ -52,7 +58,7 @@ export class FindAllProductDto {
         }
         return value;
     })
-    brand?: string;
+    brand?: Promise<string>
 
     @ApiProperty()
     @IsOptional()

@@ -29,7 +29,6 @@ export class ProductController {
     ) {}
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Post()
     create(@Body() createProductDto: CreateProductDto) {
@@ -73,7 +72,6 @@ export class ProductController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Patch(':slug')
     update(@Param('slug') slug: string, @Body() updateProductDto: UpdateProductDto) {
