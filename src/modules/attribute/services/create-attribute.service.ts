@@ -16,9 +16,11 @@ export class CreateAttributeService {
             const slug = slugify(nameUz)
             
             const categories = []
-            for(const id of categoryId){
+            if(categoryId.length > 0){
+                for(const id of categoryId){
                 const category = await Category.findOneBy({id: +id})
                 categories.push({category})
+            }
             }
 
             let attribute = Attribute.create({

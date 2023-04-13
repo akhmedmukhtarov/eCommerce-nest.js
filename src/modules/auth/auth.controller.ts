@@ -42,20 +42,26 @@ export class AuthController {
     refresh(@Body() token: RefreshTokenDto) {
         return this.refreshTokenService.refresh(token);
     }
+    
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Patch('logout')
+    logout(@Req() req:any){
+        this.logoutUserService.logout(req)
+    }
+
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiQuery({name: 'page', required: false, schema: {type: 'integer'}})
     @ApiQuery({name: 'limit', required: false, schema: {type: 'integer'}})
     @ApiQuery({name: 'search', required: false, schema: {type: 'phone number of user'}})
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @Get()
     findAllUsers(@Query() findAllUserDto: FindAllUserDto) {
         return this.findAllUserService.findAllUser(findAllUserDto);
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'bearer token'})
     @UseGuards(JwtAuthGuard)
     @Get(':id')
     getOne(@Param('id') id: string, @Req() req: any) {
@@ -63,18 +69,9 @@ export class AuthController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     delete(@Param('id') id: string) {
         return this.deleteUserservice.delete(id);
-    }
-
-    @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'bearer token'})
-    @UseGuards(JwtAuthGuard)
-    @Patch('logout')
-    logout(@Req() req:any){
-        this.logoutUserService.logout(req)
     }
 }

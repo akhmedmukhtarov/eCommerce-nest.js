@@ -44,7 +44,6 @@ export class AttributeController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':slug')
     update(@Param('slug') slug: string, @Body() updateAttributeDto: UpdateAttributeDto) {
@@ -52,7 +51,6 @@ export class AttributeController {
     }
 
     @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':slug')
     remove(@Param('slug') slug: string) {

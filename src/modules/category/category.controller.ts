@@ -55,9 +55,9 @@ export class CategoryController {
         return this.getOneCategoryService.getOneCategory(slug);
     }
 
-    @ApiBearerAuth()
-    @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
-    @UseGuards(JwtAuthGuard, RolesGuard)
+    // @ApiBearerAuth()
+    // @ApiHeader({name: 'authorization', required: true, description: 'admin or moderators bearer token'})
+    // @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch(':slug')
     updateCatgeory(@Param('slug') slug: string, @Body() updateCategoryDto: UpdateCategoryDto) {
         return this.updateCategoryService.updateCategory(slug, updateCategoryDto);
