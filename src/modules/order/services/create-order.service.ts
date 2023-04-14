@@ -1,5 +1,5 @@
 import { CreateOrderDto } from './../dto/create-order.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from 'src/modules/auth/entities/user.entity';
 import { Order } from '../entities/order.entity';
 import { Delivery } from '../entities/delivery.entity';
@@ -12,7 +12,7 @@ export class CreateOrderService {
             let { productIdAndQty, deliveryAddress, deliveryPhone, paymentStatus, paymentMethod, note, status, deliveryPrice } = createOrderDto;
             
 
-            const user = await User.findOneByOrFail({ id: +req.id });
+            const user = await User.findOneBy({ id: +req.id });
             const orders = [];
             let totalPrice = deliveryPrice ? deliveryPrice : 0;
             for (const productInfo of productIdAndQty) {

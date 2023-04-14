@@ -1,5 +1,5 @@
 import { FindAllUserDto } from '../dto/findAll-user.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Pagination } from 'src/common/pagination/pagination';
 import { Like } from 'typeorm';
@@ -18,6 +18,9 @@ export class FindAllUserService {
             take: pagination.limit,
             skip: pagination.skippedItems
         });
+        if(!users){
+            throw new NotFoundException(`Users not found`)
+        }
         return users
     }
 }

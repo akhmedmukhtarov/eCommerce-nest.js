@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { HttpError } from '../error/http.error';
 const jwt = require('jsonwebtoken');
 require('dotenv');
 
@@ -24,7 +25,7 @@ export class JwtAuthGuard implements CanActivate {
                 throw new UnauthorizedException()
             }
         } catch (err) {
-            throw err
+            throw new HttpError(err)
         }
     }
 }

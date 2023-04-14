@@ -12,6 +12,8 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ApiBearerAuth, ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { AdminLogoutService } from './services/admin-logout.service';
+import { HttpError } from 'src/common/error/http.error';
+import { DeleteModeratorDto } from './dto/delete-moderator.dto';
 require('dotenv').config();
 
 @ApiTags('admin registration and setting and/or deleting moderators')
@@ -22,14 +24,13 @@ export class AdminCategories {
         private setModeratorService: SetModeratorService,
         private adminRefreshTokenService: AdminRefreshTokenService,
         private adminDeleteModeratorService: AdminDeleteModeratorService,
-        private adminLogoutService:AdminLogoutService,
+        private adminLogoutService: AdminLogoutService,
     ) {}
 
     @Post('login')
     adminLogin(@Body() adminLoginDto: AdminLoginDto) {
         return this.adminLoginService.adminLogin(adminLoginDto);
     }
-
 
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
@@ -48,14 +49,14 @@ export class AdminCategories {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('admin')
     @Delete('delete')
-    deleteModerator(@Body() username: string) {
-        return this.adminDeleteModeratorService.deleteModerator(username);
+    deleteModerator(@Body() deleteModeratorDto: DeleteModeratorDto) {
+        return this.adminDeleteModeratorService.deleteModerator(deleteModeratorDto);
     }
 
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard,RolesGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Patch('logout')
-    logout(@Req() req:any){
-        return this.adminLogoutService.logout(req)
+    logout(@Req() req: any) {
+        return this.adminLogoutService.logout(req);
     }
 }

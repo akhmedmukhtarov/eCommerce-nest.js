@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Pagination } from 'src/common/pagination/pagination';
 import { Category } from 'src/modules/category/entities/category.entity';
 import { FindAllProductDto } from '../dto/findAll-product.dto';
@@ -61,6 +61,9 @@ export class FindAllProductService {
                 take: pagination.limit,
                 skip: pagination.skippedItems,
             });
+            if(!products){
+                throw new NotFoundException(`Any product not found`)
+            }
             return products;
         } catch (err) {
             throw err;

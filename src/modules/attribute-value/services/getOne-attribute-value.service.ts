@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AttributeValue } from '../entities/attribute-value.entity';
 
 @Injectable()
@@ -11,6 +11,9 @@ export class GetOneAttributeValueService {
                     slug
                 }
             });
+            if(!attributeValue){
+                throw new NotFoundException(`Attribute value with slug: '${slug}' not found`)
+            }
             return attributeValue;
         } catch (err) {
             throw err;

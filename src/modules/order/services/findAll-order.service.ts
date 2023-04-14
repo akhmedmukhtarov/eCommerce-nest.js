@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindAllOrdersDto } from '../dto/findAll-order.dto';
 import { Delivery } from '../entities/delivery.entity';
 import { Pagination } from 'src/common/pagination/pagination';
@@ -34,6 +34,9 @@ export class FindAllOrderService {
                     take: ordersPagination.limit,
                     skip: ordersPagination.skippedItems
                 });
+                if(!orders){
+                    throw new NotFoundException(`Any orders not found`)
+                }
                 return orders;
             }
         } catch (error) {

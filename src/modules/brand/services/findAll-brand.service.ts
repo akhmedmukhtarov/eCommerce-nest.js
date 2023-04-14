@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Brand } from '../entities/brand.entity';
 import { FindAllBrandsDto } from '../dto/findAll-brand.dto';
 import { Pagination } from 'src/common/pagination/pagination';
@@ -15,6 +15,9 @@ export class FindAllBrandService {
                 take: brandPagination.limit,
                 skip: brandPagination.skippedItems
             });
+            if(!brands){
+                throw new NotFoundException(`Any brand not found`)
+            }
             return brands;
         } catch (err) {
             throw err;

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { SetModeratorDto } from '../dto/adminSetModerator.dto';
 import { Admin } from '../entities/admin.entity';
 const bcrypt = require('bcrypt');
@@ -8,6 +8,10 @@ export class SetModeratorService {
     async setModerator(setModeratorDto: SetModeratorDto) {
         try {
             const { username, password, name, phone } = setModeratorDto;
+            const checkModerator = await Admin.findOneBy({username})
+            if(checkModerator){
+                throw new NotAcceptableException(`Moderator or Admin with usernaem: '${username}' already exists`)
+            }
             const hashedPassword = await bcrypt.hash(password, 10);
             const moderator = Admin.create({
                 username,
@@ -15,7 +19,7 @@ export class SetModeratorService {
                 name,
                 phone,
             });
-            moderator.save();
+            return await moderator.save();
         } catch (err) {
             throw err;
         }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from '../entities/category.entity';
 
 Injectable();
@@ -11,6 +11,9 @@ export class GetOneCategoryService {
                 loadEagerRelations: true,
                 order: { nameUz: 'ASC' },
             });
+            if(!category){
+                throw new NotFoundException(`Category with slug: '${slug}' not found`)
+            }
             return category;
         } catch (err) {
             throw err;

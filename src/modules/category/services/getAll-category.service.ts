@@ -1,5 +1,5 @@
 import { FindAllCategoryDto } from './../dto/findAll-category.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from '../entities/category.entity';
 import { Pagination } from 'src/common/pagination/pagination';
 require('dotenv').config()
@@ -15,6 +15,9 @@ export class GetAllCategoriesService {
                 take: pagination.limit,
                 skip: pagination.skippedItems
             });
+            if(!categories){
+                throw new NotFoundException(`Any category not found`)
+            }
             return categories;
         } catch (err) {
             throw err;

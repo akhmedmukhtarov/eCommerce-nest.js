@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 
 @Injectable()
@@ -23,6 +23,9 @@ export class GetOneUserService {
                 },
                 loadEagerRelations: true,
             });
+            if(!user){
+                throw new NotFoundException(`User with id: '${id}' not found`)
+            }
             return user;
         } catch (error) {
             throw error;

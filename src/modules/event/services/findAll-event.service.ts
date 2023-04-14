@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Event } from '../entities/event.entity';
 import { FindAllEventDto } from '../dto/findAll-event.dto';
 import { Pagination } from 'src/common/pagination/pagination';
@@ -14,6 +14,9 @@ export class FindAllEventService {
                 take: pagination.limit,
                 skip: pagination.skippedItems
             });
+            if(!events){
+                throw new NotFoundException(`Any event not found`)
+            }
             return events;
         } catch (error) {
             throw error;

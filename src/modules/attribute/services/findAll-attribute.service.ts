@@ -1,5 +1,5 @@
 import { FindAllAttirbuteDto } from './../dto/findAll-attribute.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Attribute } from '../entities/attribute.entity';
 import { Pagination } from 'src/common/pagination/pagination';
 import { skip } from 'rxjs';
@@ -29,7 +29,11 @@ export class GetAllAttributeService {
                 take: attributePagination.limit,
                 skip: attributePagination.skippedItems
             });
-            return attributes;
+            if(!attributes){
+                throw new NotFoundException(`Attributes not found`)
+            }else{
+                return attributes
+            }
         } catch (err) {
             throw err;
         }

@@ -1,5 +1,5 @@
 import { UpdateBrandDto } from './../dto/update-brand.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Brand } from '../entities/brand.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 import { slugify } from 'src/common/helpers/slugify';
@@ -11,6 +11,12 @@ export class UpdateBrandService {
             let {nameUz,nameRu,images,status,isFeatured} = updateBrandDto
             const arrayOfCategoryId = await updateBrandDto.arrayOfCategoryId
             
+            const brand = await Brand.findOneBy({slug:brandSlug});
+            if(!brand){
+                throw new NotFoundException(`Brand with slug: '${brandSlug}' not found`)
+            }
+            
+
             let slug: string
             if(nameUz){
                 slug = slugify(nameUz)
@@ -23,7 +29,6 @@ export class UpdateBrandService {
                     categories.push(category)
                 }        
             }
-            const brand = await Brand.findOneBy({slug:brandSlug});
             brand.nameUz = nameUz ? nameUz : brand.nameUz
             brand.nameRu = nameRu ? nameRu : brand.nameRu
             brand.images = images ? images : brand.images

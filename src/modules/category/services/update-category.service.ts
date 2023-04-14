@@ -1,5 +1,5 @@
 import { UpdateCategoryDto } from '../dto/update-category.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from '../entities/category.entity';
 import { Attribute } from 'src/modules/attribute/entities/attribute.entity';
 import { Brand } from 'src/modules/brand/entities/brand.entity';
@@ -15,6 +15,12 @@ export class UpdateCategoryService {
             const arrayOfAttributeId = await updateCategoryDto.arrayOfAttributeId;
             const arrayOfBrandId = await updateCategoryDto.arrayOfBrandId;
             const arrayOfProductId = await updateCategoryDto.arrayOfProductId;
+            
+            const category = await Category.findOneBy({ slug: categorySlug });
+            if(!category){
+                throw new NotFoundException(`Catgeory with slug: '${categorySlug}' not found`)
+            }
+
 
             let slug: string;
             if (nameUz) {
@@ -45,7 +51,6 @@ export class UpdateCategoryService {
                 }
             }
 
-            const category = await Category.findOneBy({ slug: categorySlug });
 
             category.nameUz = nameUz ? nameUz : category.nameUz;
             category.nameRu = nameRu ? nameRu : category.nameRu;

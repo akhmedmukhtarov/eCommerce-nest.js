@@ -6,7 +6,6 @@ import { Order } from '../entities/order.entity';
 export class RefundOrderService {
     async refund(id: number, req: any) {
         try {
-            console.log(id);
             
             const deliveries = await Delivery.find({
                 relations: ['orders'],
@@ -21,7 +20,6 @@ export class RefundOrderService {
                 for (const order of delivery.orders) {
                     if (+order.id === +id) {                       
                         const result = await Order.update({ id: +id }, { refundRequestedAt: new Date() });
-                        return result;
                     }
                 }
             }

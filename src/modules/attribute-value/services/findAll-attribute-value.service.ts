@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AttributeValue } from '../entities/attribute-value.entity';
 import { FindAllAttributeValuesDto } from '../dto/findAll-attributeValues.dto';
 import { Pagination } from 'src/common/pagination/pagination';
@@ -25,6 +25,9 @@ export class FindAllAttributeValueService {
                 take: attributeValuePagination.limit,
                 skip: attributeValuePagination.skippedItems
             });
+            if(!attributeValues){
+                throw new NotFoundException(`Attribute values not found`)
+            }
             return attributeValues;
         } catch (err) {
             throw err;

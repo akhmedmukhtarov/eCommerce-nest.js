@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Delivery } from '../entities/delivery.entity';
 
 @Injectable()
@@ -22,6 +22,9 @@ export class GetOneOrderService {
                     relations: ['orders'],
                     loadEagerRelations: true,
                 });
+                if(!delivery){
+                    throw new NotFoundException()
+                }
                 return delivery;
             }
         } catch (error) {
