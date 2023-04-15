@@ -44,9 +44,9 @@ export class CreateAttributeDto {
     })
     arrayOfCategoryId: Promise<number[]>
 
-    @ApiProperty({type: 'array of attribute value id', example: [1,2]})
-    @IsNotEmpty()
+    @ApiProperty({type: 'array of attribute value id', example: [1,2] })
     @IsOptional()
+    @IsNotEmpty()
     @IsArray()
     @IsInt({each: true})
     @ValidatePromise()

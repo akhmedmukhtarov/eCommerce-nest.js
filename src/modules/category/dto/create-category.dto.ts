@@ -88,7 +88,7 @@ export class CreateCategoryDto {
         for(const id of value){
             const attribute = await Attribute.findOneBy({id})
             if(!attribute){
-                throw new NotFoundException(`Product with id: ${id} not found`)
+                throw new NotFoundException(`Attribute with id: ${id} not found`)
             }
         }
         return value
@@ -106,7 +106,7 @@ export class CreateCategoryDto {
         for(const id of value){
             const brand = await Brand.findOneBy({id})
             if(!brand){
-                throw new NotFoundException(`Product with id: ${id} not found`)
+                throw new NotFoundException(`Brand with id: ${id} not found`)
             }
         }
         return value

@@ -28,10 +28,14 @@ export class CategoryController {
     ) {}
 
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
+    // @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     async create(@Body() createCategoryDto: CreateCategoryDto) {
+        try {
             return await this.createCategoryService.create(createCategoryDto);
+        } catch (error) {
+            throw error
+        }
     }
 
     @ApiQuery({name: 'limit', required: false, description: 'pagination limit'})
