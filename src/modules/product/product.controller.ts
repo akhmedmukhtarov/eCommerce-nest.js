@@ -45,7 +45,6 @@ export class ProductController {
     @ApiQuery({name: 'isFeatured', required: false, schema: {type: 'asc/desc'}, description: 'sort by "isFeatured"'})
     @ApiQuery({name: 'ordercount', required: false, schema: {type: 'asc/desc'}, description: 'sort by order count'})
     @ApiQuery({name: 'viewCount', required: false, schema: {type: 'asc/desc'}, description: 'sort by view count'})
-
     @Get()
     findAll(@Query() findAllProductDto: FindAllProductDto) {
         return this.findAllProductService.findAll(findAllProductDto);

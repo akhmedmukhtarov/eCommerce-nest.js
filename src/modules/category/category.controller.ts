@@ -28,7 +28,7 @@ export class CategoryController {
     ) {}
 
     @ApiBearerAuth()
-    // @UseGuards(JwtAuthGuard, RolesGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     async create(@Body() createCategoryDto: CreateCategoryDto) {
         try {
