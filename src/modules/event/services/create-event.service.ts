@@ -7,9 +7,10 @@ import { slugify } from 'src/common/helpers/slugify';
 export class CreateEventService {
     async create(createEventDto: CreateEventDto) {
         try {
-            const { titleRu, titleUz, position, image, url, startsAt, endsAt } = createEventDto;
+            const { titleRu, titleUz, position, url, startsAt, endsAt } = createEventDto;
 
             const slug = slugify(titleUz)
+            const image = createEventDto.image.join('')
             
             let event = Event.create({
                 titleRu,

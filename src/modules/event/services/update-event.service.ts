@@ -7,7 +7,8 @@ import { slugify } from 'src/common/helpers/slugify';
 export class UpdateEventService {
     async update(eventSlug: string, updateEventDto: UpdateEventDto) {
         try {
-            const {titleRu,titleUz, image,url,position,startsAt,endsAt} = updateEventDto
+            const {titleRu,titleUz,url,position,startsAt,endsAt} = updateEventDto
+            const image = updateEventDto.image.join('')
             const event = await Event.findOneBy({slug: eventSlug})
             if(!event){
                 throw new NotFoundException(`Event with slug: '${eventSlug}' not found`)

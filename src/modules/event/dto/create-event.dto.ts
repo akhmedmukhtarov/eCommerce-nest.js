@@ -15,11 +15,11 @@ export class CreateEventDto {
     @IsString()
     titleRu: string
 
-    @ApiProperty({type: 'String of one or more pictures, divided by comma', example: 'url,url1,url2'})
+    @ApiProperty({type: 'Array of one or more pictures', example: ['url','url1']})
     @IsDefined()
     @IsNotEmpty()
     @IsString()
-    image: string
+    image: string[]
 
     @ApiProperty()
     @IsDefined()
