@@ -36,7 +36,7 @@ export class UpdateBrandService {
             brand.status = status ? status : brand.status
             brand.isFeatured = isFeatured ? isFeatured : brand.isFeatured
             brand.categories = categories ? categories : brand.categories
-            brand.slug = slug ? slug : brand.slug
+            brand.slug = slug ? slug+brand.id : brand.slug
             return await brand.save();
         } catch (err) {
             throw err;

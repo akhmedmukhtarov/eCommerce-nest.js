@@ -59,7 +59,7 @@ export class UpdateCategoryService {
             category.status = status ? status : category.status;
             category.images = images ? images : category.images;
             category.parentId = parentId ? parentId : category.parentId;
-            category.slug = slug ? slug : category.slug;
+            category.slug = slug ? slug+category.id: category.slug;
             category.attributes = attributes ? attributes : category.attributes;
             category.brands = brands ? brands : category.brands;
             category.products = products ? products : category.products;
