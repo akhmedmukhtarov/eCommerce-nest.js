@@ -10,7 +10,11 @@ export class UpdateBrandService {
         try {
             let {nameUz,nameRu,images,status,isFeatured}: any = updateBrandDto
             const arrayOfCategoryId = await updateBrandDto.arrayOfCategoryId
-            images = images.join('')
+
+            if(images){
+                images = images.join('')
+            }
+            
             
             const brand = await Brand.findOneBy({slug:brandSlug});
             if(!brand){

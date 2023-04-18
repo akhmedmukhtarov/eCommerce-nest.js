@@ -10,7 +10,10 @@ export class CreateEventService {
             const { titleRu, titleUz, position, url, startsAt, endsAt } = createEventDto;
 
             const slug = slugify(titleUz)
-            const image = createEventDto.image.join('')
+            let image:string
+            if(createEventDto.image){
+                image = createEventDto.image.join('')
+            }
             
             let event = Event.create({
                 titleRu,

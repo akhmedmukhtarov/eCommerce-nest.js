@@ -8,7 +8,10 @@ export class UpdateEventService {
     async update(eventSlug: string, updateEventDto: UpdateEventDto) {
         try {
             const {titleRu,titleUz,url,position,startsAt,endsAt} = updateEventDto
-            const image = updateEventDto.image.join('')
+            let image:string
+            if(updateEventDto.image){
+                image = updateEventDto.image.join('')
+            }
             const event = await Event.findOneBy({slug: eventSlug})
             if(!event){
                 throw new NotFoundException(`Event with slug: '${eventSlug}' not found`)

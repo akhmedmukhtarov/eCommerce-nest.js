@@ -5,7 +5,8 @@ import { Brand } from '../entities/brand.entity';
 export class GetOneBrandService {
     async getOne(slug: string) {
         try {
-            const brand = await Brand.findOneBy({slug});
+            const brand = await Brand.findOneBy({slug: slug});
+            
             if(!brand){
                 throw new NotFoundException(`Brand with slug: '${slug}' not found`)
             }
