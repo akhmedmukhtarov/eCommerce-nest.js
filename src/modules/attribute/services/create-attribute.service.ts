@@ -1,6 +1,6 @@
 import { CreateAttributeDto } from '../dto/create-attribute.dto';
 
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Attribute } from '../entities/attribute.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 import { slugify } from 'src/common/helpers/slugify';
@@ -31,6 +31,7 @@ export class CreateAttributeService {
                     attributeValues.push(attributeValue)
                 }
             }
+            
 
             let attribute = Attribute.create({
                 nameRu,

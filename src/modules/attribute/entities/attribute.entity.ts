@@ -24,10 +24,10 @@ export class Attribute extends BaseEntity {
     @ManyToMany(()=> Category, (category: Category)=> category.attributes)
     categories: Category[]
 
-    @Column()
+    @Column({unique: false})
     nameUz: string;
 
-    @Column()
+    @Column({unique: false})
     nameRu: string;
 
     @Column({default: null})

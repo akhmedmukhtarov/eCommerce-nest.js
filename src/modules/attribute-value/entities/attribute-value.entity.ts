@@ -16,9 +16,9 @@ export class AttributeValue extends BaseEntity {
     @Column({default: null})
     slug: string
 
-    @Column()
+    @Column({unique: false})
     nameUz:string
 
-    @Column()
+    @Column({unique: false})
     nameRu: string
 }

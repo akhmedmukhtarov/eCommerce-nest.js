@@ -11,7 +11,7 @@ export class GetOneCategoryService {
                 loadEagerRelations: true,
                 order: { nameUz: 'ASC' },
             });
-            if(!category.length == 0){
+            if(!category){
                 throw new NotFoundException(`Category with slug: '${slug}' not found`)
             }
             return category;

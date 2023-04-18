@@ -8,10 +8,10 @@ export class Category extends BaseEntity{
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number
 
-    @Column({unique: true})
+    @Column({unique: false})
     nameUz: string
 
-    @Column({unique: true})
+    @Column({unique: false})
     nameRu: string
 
     @Column({default:null})

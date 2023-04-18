@@ -10,7 +10,7 @@ export class Delivery extends BaseEntity{
     @ManyToOne(()=> User,(user: User)=> user.delivery)
     user: User
     
-    @Column()
+    @Column({unique: false})
     totalPrice: number
 
     @Column({default: null})
@@ -29,10 +29,10 @@ export class Delivery extends BaseEntity{
     @Column({default: null})
     deliveryPrice: number
 
-    @Column()
+    @Column({unique: false})
     deliveryAddress: string 
 
-    @Column()
+    @Column({unique: false})
     deliveryPhone: string
 
     @CreateDateColumn()

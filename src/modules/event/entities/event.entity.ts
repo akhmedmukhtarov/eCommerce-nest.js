@@ -5,13 +5,13 @@ export class Event extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({unique: false})
     titleUz: string
 
-    @Column()
+    @Column({unique: false})
     titleRu: string
 
-    @Column()
+    @Column({default: null})
     slug: string
 
     @Column()

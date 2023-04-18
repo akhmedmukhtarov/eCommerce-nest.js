@@ -2,6 +2,7 @@ import { Admin } from './../entities/admin.entity';
 import { AdminRefreshTokenDto } from './../dto/adminRefreshToken.dto';
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { AdminTokenService } from './admin-token.service';
+import { HttpError } from 'src/common/error/http.error';
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 require("dotenv").config()
@@ -21,7 +22,7 @@ export class AdminRefreshTokenService extends AdminTokenService{
                 return new HttpException('', HttpStatus.UNAUTHORIZED)
             }
         }catch(err){
-            throw err
+            throw new HttpError(err)
         }
 
     }

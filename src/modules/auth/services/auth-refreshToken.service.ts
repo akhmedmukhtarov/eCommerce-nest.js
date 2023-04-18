@@ -2,6 +2,7 @@ import { User } from './../entities/user.entity';
 import { RefreshTokenDto } from '../dto/refreshToken.dto';
 import { TokenService } from './auth-token.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpError } from 'src/common/error/http.error';
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -30,7 +31,7 @@ export class RefreshTokenService extends TokenService {
                 return { accessToken };
             }
         } catch (err) {
-            throw err
+            throw new HttpError(err)
         }
     }
 }

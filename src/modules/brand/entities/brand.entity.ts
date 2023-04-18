@@ -7,10 +7,10 @@ export class Brand extends BaseEntity {
     @PrimaryGeneratedColumn()
     id:number
 
-    @Column()
+    @Column({unique: false})
     nameUz: string
 
-    @Column()
+    @Column({unique: false})
     nameRu:string
 
     @Column({default: null})
