@@ -17,11 +17,12 @@ export class CreateBrandDto {
     @IsString()
     nameRu:string
 
-    @ApiProperty({type: 'string of one or more url of picture didided by comma', example: 'url,url1'})
+    @ApiProperty({type: 'array of one or more url of picture', example: ['url', 'url1']})
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
-    images: string
+    @IsArray()
+    @IsString({each: true})
+    images: string[]
 
     @ApiProperty()
     @IsOptional()

@@ -8,8 +8,9 @@ import { slugify } from 'src/common/helpers/slugify';
 export class UpdateBrandService {
     async update(brandSlug: string, updateBrandDto: UpdateBrandDto) {
         try {
-            let {nameUz,nameRu,images,status,isFeatured} = updateBrandDto
+            let {nameUz,nameRu,images,status,isFeatured}: any = updateBrandDto
             const arrayOfCategoryId = await updateBrandDto.arrayOfCategoryId
+            images = images.join('')
             
             const brand = await Brand.findOneBy({slug:brandSlug});
             if(!brand){

@@ -8,8 +8,10 @@ import { slugify } from 'src/common/helpers/slugify';
 export class CreateBrandService {
     async create(createBrandDto: CreateBrandDto) {
         try {
-            let { nameRu, nameUz, images, isFeatured, status } = createBrandDto;
+            let { nameRu, nameUz, images, isFeatured, status }: any = createBrandDto;
             const arrayOfCategoryId = await createBrandDto.arrayOfCategoryId
+
+            images = images.join('')
 
             const slug = slugify(nameUz);
 
