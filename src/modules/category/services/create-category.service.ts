@@ -11,11 +11,12 @@ import { Brand } from 'src/modules/brand/entities/brand.entity';
 export class CreateCategoryService {
     async create(createCategoryDto: CreateCategoryDto) {
         try {
-            const { nameUz, nameRu, position, isFeatured, status, images } = createCategoryDto;
+            const { nameUz, nameRu, position, isFeatured, status } = createCategoryDto;
             const parentId = await createCategoryDto.parentId;
             const arrayOfProductId = await createCategoryDto.arrayOfProductId;
             const arrayOfAttributeId = await createCategoryDto.arrayOfAttributeId;
             const arrayOfBrandId = await createCategoryDto.arrayOfBrandId
+            const images = createCategoryDto.images.join("")
 
             const slug = slugify(nameUz);
 

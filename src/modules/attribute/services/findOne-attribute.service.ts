@@ -17,7 +17,7 @@ export class FindOneAttributeService {
             }
             return attribute;
         } catch (err) {
-            throw err.message;
+            throw err
         }
     }
 }

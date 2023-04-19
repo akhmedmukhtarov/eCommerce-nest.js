@@ -5,7 +5,7 @@ import { AttributeValue } from '../entities/attribute-value.entity';
 export class GetOneAttributeValueService {
     async getOne(slug: string) {
         try {
-            const attributeValue = await AttributeValue.find({
+            const attributeValue = await AttributeValue.findOne({
                 loadRelationIds: true,
                 where:{
                     slug

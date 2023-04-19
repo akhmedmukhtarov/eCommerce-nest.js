@@ -18,7 +18,7 @@ export class UpdateEventService {
             }
             let slug: string
             if(titleUz){
-                slug = slugify(slug)
+                slug = slugify(titleUz)
             }
 
             event.titleRu = titleRu ? titleRu : event.titleRu

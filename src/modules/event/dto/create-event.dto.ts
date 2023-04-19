@@ -18,7 +18,7 @@ export class CreateEventDto {
     @ApiProperty({type: 'Array of one or more pictures', example: ['url','url1']})
     @IsDefined()
     @IsNotEmpty()
-    @IsString()
+    @IsString({each: true})
     image: string[]
 
     @ApiProperty()

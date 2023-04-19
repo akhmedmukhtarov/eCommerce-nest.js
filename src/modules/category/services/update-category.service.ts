@@ -10,7 +10,7 @@ import { slugify } from 'src/common/helpers/slugify';
 export class UpdateCategoryService {
     async updateCategory(categorySlug: string, updateCategoryDto: UpdateCategoryDto) {
         try {
-            const { nameUz, nameRu, position, isFeatured, status, images } = updateCategoryDto;
+            const { nameUz, nameRu, position, isFeatured, status } = updateCategoryDto;
             const parentId = await updateCategoryDto.parentId;
             const arrayOfAttributeId = await updateCategoryDto.arrayOfAttributeId;
             const arrayOfBrandId = await updateCategoryDto.arrayOfBrandId;
@@ -21,10 +21,15 @@ export class UpdateCategoryService {
                 throw new NotFoundException(`Catgeory with slug: '${categorySlug}' not found`)
             }
 
+            let images:string
+            if(updateCategoryDto.images){
+                images = updateCategoryDto.images.join("")
+            }
+
 
             let slug: string;
             if (nameUz) {
-                let slug = slugify(nameUz);
+                slug = slugify(nameUz);
             }
 
             const attributes = [];

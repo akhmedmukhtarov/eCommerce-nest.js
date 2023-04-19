@@ -40,12 +40,17 @@ export class CreateProductService {
             }
 
             const attributeValues = [];
-            for (const attrValueId of arrayOfattributeValueId) {
-                const attributeValue = await AttributeValue.findOneByOrFail({ id: attrValueId });
-                attributeValues.push(attributeValue);
+            if(arrayOfattributeValueId){
+                for (const attrValueId of arrayOfattributeValueId) {
+                    const attributeValue = await AttributeValue.findOneByOrFail({ id: attrValueId });
+                    attributeValues.push(attributeValue);
+                }
             }
 
-            const brand = await Brand.findOneByOrFail({ id: +brandId });
+            let brand
+            if(brandId){
+                brand = await Brand.findOneByOrFail({ id: +brandId });
+            }
 
             let product = Product.create({
                 nameUz,

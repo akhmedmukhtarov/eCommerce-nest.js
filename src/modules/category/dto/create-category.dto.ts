@@ -54,10 +54,11 @@ export class CreateCategoryDto {
     status?: boolean;
 
     @ApiProperty()
-    @IsString()
+    @IsArray()
+    @IsString({each: true})
     @IsDefined()
     @IsNotEmpty()
-    images: string;
+    images: string[]
 
     @ApiProperty({type: 'Array of product id', example: [1,2]})
     @IsOptional()

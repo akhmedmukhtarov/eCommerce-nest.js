@@ -12,35 +12,13 @@ import { Delivery } from 'src/modules/order/entities/delivery.entity';
 
 require('dotenv').config();
 
-// export const typeOrmConfig: TypeOrmModuleOptions = {
-//     type: 'mysql',
-//     host: 'localhost', //process.env.DB_HOST,
-//     port: 8889,
-//     username: 'root', //process.env.DB_USERNAME,
-//     password: 'root', //process.env.DB_PASS,
-//     database: 'sdb-nest', //process.env.DB_NAME,
-//     entities: [
-//         User,
-//         Admin,
-//         Category,
-//         Product,
-//         Attribute,
-//         AttributeValue,
-//         Brand,
-//         Event,
-//         Order,
-//         Delivery
-//     ],
-//     synchronize: true,
-// };
-
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'mysql',
-    host: process.env.DB_HOST,
-    port: 3306,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    host: 'localhost', //process.env.DB_HOST,
+    port: 8889,
+    username: 'root', //process.env.DB_USERNAME,
+    password: 'root', //process.env.DB_PASS,
+    database: 'sdb-nest', //process.env.DB_NAME,
     entities: [
         User,
         Admin,
@@ -55,3 +33,25 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     ],
     synchronize: true,
 };
+
+// export const typeOrmConfig: TypeOrmModuleOptions = {
+//     type: 'mysql',
+//     host: process.env.DB_HOST,
+//     port: 3306,
+//     username: process.env.DB_USERNAME,
+//     password: process.env.DB_PASS,
+//     database: process.env.DB_NAME,
+//     entities: [
+//         User,
+//         Admin,
+//         Category,
+//         Product,
+//         Attribute,
+//         AttributeValue,
+//         Brand,
+//         Event,
+//         Order,
+//         Delivery
+//     ],
+//     synchronize: true,
+// };

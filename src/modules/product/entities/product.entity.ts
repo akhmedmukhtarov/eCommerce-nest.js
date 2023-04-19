@@ -28,7 +28,7 @@ export class Product extends BaseEntity {
     @Column({unique: false})
     nameRu: string;
 
-    @Column()
+    @Column({nullable:true})
     slug: string;
 
     @Column({ default: null })
