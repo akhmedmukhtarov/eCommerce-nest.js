@@ -10,6 +10,7 @@ import { RefundOrderService } from './services/refund-order.service';
 import { GetAllRefundOrderDto } from './dto/getAllRefundOrder.dto';
 import { GetRefundRequestedOrdersService } from './services/getRefundRequestedOrders.service';
 import { ApiBearerAuth, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { DeleteOrderService } from './services/delete-order.service';
 @ApiTags('order')
 @Controller('order')
 export class OrderController {
@@ -19,6 +20,7 @@ export class OrderController {
         private readonly getOneOrderService: GetOneOrderService,
         private readonly refundOrderService: RefundOrderService,
         private readonly getRefundRequestedOrdersService: GetRefundRequestedOrdersService,
+        private readonly deleteOrderService:DeleteOrderService,
     ) {}
 
     @ApiBearerAuth()
@@ -53,7 +55,9 @@ export class OrderController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete('delete/:id')
-    remove(@Param('id') id: string) {}
+    remove(@Param('id') id: string) {
+        return this.deleteOrderService.delete(id)
+    }
 
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
@@ -61,11 +65,6 @@ export class OrderController {
     refund(@Body('id') id: number, @Req() req: any) {
         return this.refundOrderService.refund(id, req);
     }
-
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Patch('refund')
-    refundAdmin(@Body('id') id: number) {}
 
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)

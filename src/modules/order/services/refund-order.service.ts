@@ -15,6 +15,9 @@ export class RefundOrderService {
                 },
                 loadEagerRelations: true,
             });
+            if(!deliveries){
+                return 'You can ask about refund only for your orders';
+            }
             
             for (const delivery of deliveries) {
                 for (const order of delivery.orders) {
@@ -23,7 +26,6 @@ export class RefundOrderService {
                     }
                 }
             }
-            return 'You can ask about refund only for your orders';
         } catch (error) {
             throw error;
         }
