@@ -14,13 +14,14 @@ export class UpdateAttributeService {
             const arrayOfCategoryId = await updateAttributeDto.arrayOfCategoryId
             const arrayOfAttributeValueId = await updateAttributeDto.arrayOfAttributeValueId
             
+            
             let slug: string;
             if (nameUz) {
                 slug = slugify(nameUz);
             }
 
             const categories = [];
-            if (arrayOfCategoryId.length > 0) {
+            if (arrayOfCategoryId) {
                 for (const id of arrayOfCategoryId) {
                     const category = await Category.findOneBy({ id: +id });
                     categories.push(category);

@@ -18,7 +18,11 @@ export class UpdateAttributeValueService {
                 slug = slugify(nameUz)
             }
 
-            const attribute = await Attribute.findOneBy({id: + attributeId})
+            let attribute: any
+            if(attributeId){
+
+                attribute = await Attribute.findOneBy({id: + attributeId})
+            }
 
             const products = []
             if(productId){

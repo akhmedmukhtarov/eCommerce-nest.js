@@ -17,7 +17,7 @@ export class CreateAttributeService {
             const slug = slugify(nameUz)
             
             const categories = []
-            if(arrayOfCategoryId.length > 0){
+            if(arrayOfCategoryId){
                 for(const id of arrayOfCategoryId){
                 const category = await Category.findOneBy({id: +id})
                 categories.push(category)
