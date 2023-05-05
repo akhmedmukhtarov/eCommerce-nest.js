@@ -7,7 +7,11 @@ import { log } from 'console';
 
 async function bootstrap() {
   const port = +process.env.PORT
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['debug', 'error', 'verbose', 'warn'],
+    cors: true,
+    bodyParser: true,
+  });
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
