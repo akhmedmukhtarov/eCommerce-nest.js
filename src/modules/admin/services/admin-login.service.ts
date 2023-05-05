@@ -13,11 +13,14 @@ export class AdminLoginService extends AdminTokenService {
             // const a = Admin.create({username,hashedPassword,role:'admin'})
             // await a.save()
             const admin = await Admin.findOneBy({ username });
+            if(!admin){
+                throw new HttpException('Admin/moderator with username: ' + username+ ' not found', HttpStatus.BAD_REQUEST)
+            }
             
             const result = await bcrypt.compare(password, admin.hashedPassword);
             
             if (!result) {
-                return new HttpException(
+                throw new HttpException(
                     'Wrong username/password',
                     HttpStatus.BAD_REQUEST,
                 );
